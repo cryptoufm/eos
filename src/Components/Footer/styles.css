@@ -1,4 +1,8 @@
 
+.root {
+    width: 500px;
+  }
+
 .bottom-navigation {
   position: fixed;
   bottom: 0px;
