@@ -21,9 +21,10 @@ class Footer extends Component {
           <BottomNavigation
               showLabels
               >
-              <BottomNavigationAction label="Recents" icon={<RestoreIcon />} />
-              <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-              <BottomNavigationAction label="Nearby" icon={<LocationOnIcon />} />
+              <BottomNavigationAction label="Account" icon={<RestoreIcon />} />
+              <BottomNavigationAction label="Game" icon={<FavoriteIcon />} />
+              <BottomNavigationAction label="Ranking" icon={<LocationOnIcon />} />
+              <BottomNavigationAction label="Map" icon={<LocationOnIcon />} />
             </BottomNavigation>
           </div>
         </Paper>
