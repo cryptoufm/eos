@@ -8,9 +8,15 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import RestoreIcon from '@material-ui/icons/Restore';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import BarChartIcon from '@material-ui/icons/BarChart';
+import PersonIcon from '@material-ui/icons/Person';
+import { Api, JsonRpc, RpcError } from 'eosjs';
+import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig';
 
 
 class Footer extends Component {
+
   render() {
     const { children } = this.props
 
@@ -21,9 +27,9 @@ class Footer extends Component {
           <BottomNavigation
               showLabels
               >
-              <BottomNavigationAction label="Account" icon={<RestoreIcon />} />
+              <BottomNavigationAction label="Account" icon={<PersonIcon />} />
               <BottomNavigationAction label="Game" icon={<FavoriteIcon />} />
-              <BottomNavigationAction label="Ranking" icon={<LocationOnIcon />} />
+              <BottomNavigationAction label="Ranking" icon={<BarChartIcon />} />
               <BottomNavigationAction label="Map" icon={<LocationOnIcon />} />
             </BottomNavigation>
           </div>
