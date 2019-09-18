@@ -5,6 +5,7 @@ import Home from './Home';
 import List from './Components/List';
 import Account from './Components/List';
 import Profile from './Components/Perfil';
+import Ranking from './Components/Ranking';
 
 class App extends Component {
   render() {
@@ -14,6 +15,7 @@ class App extends Component {
           <Route exact path='/' component={Home}/>
           <Route path='/list' component={List}/>
           <Route path='/profile' component={Profile}/>
+          <Route path='/ranking' component={Ranking}/>
         </Switch>
       </div>
     )
