@@ -63,27 +63,32 @@ class Ranking extends Component {
     console.log(rows)
 
     return(
-       <Paper>
-        <Table className={styles} >
-          <TableHead>
-            <TableRow>
-              <TableCell id="players">Jugadores</TableCell>
-              <TableCell>Tokens</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row, index) => (
-              <TableRow key={index}>
-                <TableCell component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell>{row.balance}</TableCell>
+      <div>
+        <div id="title">
+          Ranking
+        </div>
+        <div id="tableContainer">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell id="players">Jugadores</TableCell>
+                <TableCell>$ Mises $ </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Footer />
-    </Paper>
+            </TableHead>
+            <TableBody>
+              {rows.map((row, index) => (
+                <TableRow key={index}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell>{row.balance}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+      <Footer />
+    </div>
       )
   }
 }
