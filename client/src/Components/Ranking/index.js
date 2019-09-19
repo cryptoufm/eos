@@ -9,6 +9,9 @@ import Paper from '@material-ui/core/Paper';
 import { styles }  from './ranking.css';
 import players from'./players';
 import Footer from '../Footer';
+import Grid from '@material-ui/core/Grid';
+import PersonIcon from '@material-ui/icons/Person';
+import LocalAtmIcon from '@material-ui/icons/LocalAtm';
 
 
 class Ranking extends Component {
@@ -60,7 +63,7 @@ class Ranking extends Component {
   render() {
 
     return(
-      <div>
+      <div id='wrapper'>
         <div id="title">
           Ranking
         </div>
