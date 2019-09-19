@@ -28,7 +28,6 @@ class Footer extends Component {
           <BottomNavigation
               showLabels
               >
-
               <Link to={'./profile'}>
                 <BottomNavigationAction label="Account" icon={<PersonIcon />} />
               </Link>

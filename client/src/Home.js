@@ -3,19 +3,12 @@ import './Home.css';
 import { Link } from 'react-router-dom';
 import Profile from './Components/Perfil'
 import Footer from './Components/Footer'
-
+import Login from './Login'
 
 function Home() {
   return (
     <div className="App">
-      <div>
-        <Link to={'./list'}>
-          <button variant="raised">
-              My List
-          </button>
-        </Link>
-      </div>
-      <Profile />
+      <Login />
       <Footer />
     </div>
   );
