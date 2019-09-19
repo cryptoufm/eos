@@ -4,6 +4,9 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require("cors");
+var rp = require("request-promise-native");
+var request = require("request");
+
 
 var app = express();
 
@@ -28,6 +31,21 @@ app.get('/api/getList', function(req,res) {
   var list = ["item1", "item2", "item3"];
   console.log('Sent list of items');
   res.json(list);
+});
+
+app.get('/getRanking', async function(req,res) {
+
+  async function processData() {
+    var options={
+      uri: `http://54.163.3.27:5000/getScores`,
+      method: 'GET'
+    }
+    let response = await rp(options);
+    return response;
+  }
+  var done = await processData()
+  res.send( done );
+
 });
 
 
