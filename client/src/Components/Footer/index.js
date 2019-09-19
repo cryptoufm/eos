@@ -32,7 +32,9 @@ class Footer extends Component {
               <Link to={'./profile'}>
                 <BottomNavigationAction label="Account" icon={<PersonIcon />} />
               </Link>
-              <BottomNavigationAction label="Game" icon={<FavoriteIcon />} />
+              <Link to={'./game'}>
+                <BottomNavigationAction label="Game" icon={<FavoriteIcon />} />
+              </Link>
               <Link to={'./list'}>
                 <BottomNavigationAction label="List" icon={<BarChartIcon />} />
               </Link>

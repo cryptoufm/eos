@@ -9,6 +9,9 @@ import Paper from '@material-ui/core/Paper';
 import { styles }  from './ranking.css';
 import players from'./players';
 import Footer from '../Footer';
+import Grid from '@material-ui/core/Grid';
+import PersonIcon from '@material-ui/icons/Person';
+import LocalAtmIcon from '@material-ui/icons/LocalAtm';
 
 
 
@@ -29,6 +32,8 @@ class Ranking extends Component {
 
 
   render() {
+
+    
 
   //<JsonToTable json={players} />  
 
@@ -63,12 +68,12 @@ class Ranking extends Component {
     console.log(rows)
 
     return(
-      <div>
+      <div id='wrapper'>
         <div id="title">
           Ranking
         </div>
         <div id="tableContainer">
-          <Table>
+          <Table id='tabla'>
             <TableHead>
               <TableRow>
                 <TableCell id="players">Jugadores</TableCell>
@@ -79,9 +84,25 @@ class Ranking extends Component {
               {rows.map((row, index) => (
                 <TableRow key={index}>
                   <TableCell component="th" scope="row">
-                    {row.name}
+                    <Grid container >
+                      <Grid  item xs={2}>
+                        <PersonIcon color="secondary" />
+                      </Grid>  
+                      <Grid item >
+                        {row.name}
+                      </Grid>  
+                    </Grid>  
                   </TableCell>
-                  <TableCell>{row.balance}</TableCell>
+                  <TableCell>
+                    <Grid container >
+                      <Grid  item xs={4}>
+                        <LocalAtmIcon color="secondary" />
+                      </Grid>
+                      <Grid items>
+                        {row.balance}
+                      </Grid>
+                    </Grid>  
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
