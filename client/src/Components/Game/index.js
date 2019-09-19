@@ -271,7 +271,7 @@ class Game extends Component {
         
 
         this.getLocation()
-        if((station.code === event.target.value) /*&& (xmin < this.state.longitude) && (this.state.longitude < xmax) && (ymin < this.state.latitude) && (this.state.latitude < ymax)*/) {
+        if((station.code === event.target.value) && (xmin < this.state.longitude) && (this.state.longitude < xmax) && (ymin < this.state.latitude) && (this.state.latitude < ymax)) {
             this.setState({
                 ...this.state,
                 valid: true
