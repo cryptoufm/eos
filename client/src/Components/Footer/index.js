@@ -34,13 +34,12 @@ class Footer extends Component {
               <Link to={'./game'}>
                 <BottomNavigationAction label="Game" icon={<FavoriteIcon />} />
               </Link>
-              <Link to={'./list'}>
-                <BottomNavigationAction label="List" icon={<BarChartIcon />} />
-              </Link>
               <Link to={'./ranking'}>
                 <BottomNavigationAction label="Ranking" icon={<BarChartIcon />} />
               </Link>
-              <BottomNavigationAction label="Map" icon={<LocationOnIcon />} />
+              <Link to={'./ranking'}>
+                <BottomNavigationAction label="Map" icon={<LocationOnIcon />} />
+              </Link>
             </BottomNavigation>
           </div>
         </Paper>
