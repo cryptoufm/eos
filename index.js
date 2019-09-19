@@ -33,7 +33,7 @@ app.get('/api/getList', function(req,res) {
   res.json(list);
 });
 
-app.get('/getRanking', async function(req,res) {
+app.get('/api/getRanking', async function(req,res) {
 
   async function processData() {
     var options={
@@ -41,10 +41,11 @@ app.get('/getRanking', async function(req,res) {
       method: 'GET'
     }
     let response = await rp(options);
+    //console.log(JSON.parse("[" + response + "]"));
     return response;
   }
   var done = await processData()
-  res.send( done );
+  res.json( done );
 
 });
 
