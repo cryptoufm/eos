@@ -14,6 +14,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import LocalAtmIcon from '@material-ui/icons/LocalAtm';
 
 
+
 class Ranking extends Component {
 
   constructor(props){

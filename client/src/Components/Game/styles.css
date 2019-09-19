@@ -1,0 +1,30 @@
+#hints {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    margin: 0;
+}
+
+.header svg {
+    width: 50px;
+}
+
+#wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.wrapperNew {
+    /*background de Cuj para pantalla de empezar juego y game over */
+}
