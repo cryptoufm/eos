@@ -1,0 +1,8 @@
+.photo-user{
+    margin-bottom: 3%;
+    position: absolute;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 50%;
+    bottom: 53%;
+}

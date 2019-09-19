@@ -8,25 +8,22 @@
 .header {
     margin-left: 8%;
     height: 45%;
+    bottom: 10px;
 }
 
 .user-photo {
-    margin-top: 8%;
     margin-bottom: 3%;
-    margin-left: 8%;
-    height: 200px;
-    position: relative;
-    width: 200px;
-    height: 200px;
+    position: absolute;
+    height: 100px;
     overflow: hidden;
     border-radius: 50%;
+    bottom: 53%;
 }
 
 .detalles {
     margin-left: 8%;
     color: #FFF;
     border-radius: 15px 50px 0px 0px;
-    /*background-color: #f7f7f7;*/
     width: auto;
     height: 100%;
     bottom: 10px;

@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 import firebase from "firebase"
+import './style.css';
+import Grid from '@material-ui/core/Grid';
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 
 firebase.initializeApp({
@@ -8,6 +10,8 @@ firebase.initializeApp({
 })
 
 class Login extends Component {
+
+
   state = { isSignedIn: false }
   uiConfig = {
     signInFlow: "popup",
@@ -28,26 +32,30 @@ class Login extends Component {
       console.log("user", user)
     })
   }
-
   render() {
     return (
       <div>
+        <div>Hola</div>
         {this.state.isSignedIn ? (
-          <span>
+          <div>
+            <div>
+              <img className="photo-user"
+                alt="profile picture"
+                src={firebase.auth().currentUser.photoURL}
+              />
+            </div>
             <div>Signed In!</div>
             <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
             <h1>Welcome {firebase.auth().currentUser.displayName}</h1>
-            <img
-              alt="profile picture"
-              src={firebase.auth().currentUser.photoURL}
-            />
-          </span>
+            
+          </div>
         ) : (
           <StyledFirebaseAuth
             uiConfig={this.uiConfig}
             firebaseAuth={firebase.auth()}
           />
         )}
+
       </div>
     )
   }
