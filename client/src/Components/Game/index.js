@@ -12,6 +12,10 @@ import teal from '@material-ui/core/colors/teal';
 import TextField from '@material-ui/core/TextField';
 import { styles }             from './styles.css'
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import moment from 'moment';
+import firebase from "firebase"
+
+
 class Game extends Component {
     
          constructor(props){
@@ -28,6 +32,8 @@ class Game extends Component {
                  hint2: false,
                  valid: false,
                  guess: '',
+                 transaction: '',
+                 start: moment(),
                  data: {
                     reward: 100,
                     hint1: 20,
@@ -35,83 +41,71 @@ class Game extends Component {
                     stations: [{
                         "id":"1",
                         "coords": {
-                            "x1":"-90.505627","y1":"14.604346",
-                            "x2":"-90.50559185","y2":"14.60442246",
-                            "x3":"-90.50567632","y3":"14.60436332",
-                            "x4":"-90.505479","y4":"14.604436"
+                            "minx":"-90.405761","maxx":"-90.605479",
+                            "miny":"14.504346","maxy":"14.70461515"
                         },
                         "code": "ay7f",
-                        "hint1":"hola1",
-                        "hint2":"hola2",
-                        "pregunta":"Donde es esto",
+                        "hint1":"En camino a emprender un negocio",
+                        "hint2":"Atlas en escuela de negocios",
+                        "pregunta":"Debajo del mundo",
                         "name":"Estacion misteriosa"
                 },
                     {
                         "id":"2",
                         "coords": {
-                            "x1":"-90.505432","y1":"14.605253",
-                            "x2":"-90.50540619","y2":"14.60550398",
-                            "x3":"-90.505463","y3":"14.605940",
-                            "x4":"-90.50565508","y4":"14.60588374"
+                            "minx":"-90.505676","maxx":"-90.605432",
+                            "miny":"14.594363","maxy":"14.60594"
                         },
                         "code": "xym9",
-                        "hint1":"hola1",
-                        "hint2":"hola2",
-                        "pregunta":"Donde es esto",
-                        "name":"Estacion misteriosa2"
+                        "hint1":"Leyendo se aprende",
+                        "hint2":"Debajo de la biblioteca",
+                        "pregunta":"Bajo los libros se oyen quaks",
+                        "name":"Estacion libertaria"
                     },
                     {
                         "id":"3",
                         "coords": {
-                            "x1":"-90.505308","y1":"14.607521",
-                            "x2":"-90.50545202","y2":"14.60752042",
-                            "x3":"-90.50552779","y3":"14.60770161",
-                            "x4":"-90.505316","y4":"14.607782"
+                            "minx":"-90.405528","maxx":"-90.505308",
+                            "miny":"14.60752","maxy":"14.607782"
                         },
                         "code": "b4rc",
-                        "hint1":"hola1",
-                        "hint2":"hola2",
-                        "pregunta":"Donde es esto",
-                        "name":"Estacion misteriosa3"
+                        "hint1":"Conduciendo se puede ver...",
+                        "hint2":"Redondel enfrente del museo",
+                        "pregunta":"Nudo en un redondel",
+                        "name":"Estacion capitalista"
                     },{
                         "id":"4",
                         "coords": {
-                            "x1":"-90.50553645","y1":"14.60792996",
-                            "x2":"-90.505814","y2":"14.607938",
-                            "x3":"-90.50551126","y3":"14.60805315",
-                            "x4":"-90.505733","y4":"14.608161"
+                            "minx":"-90.505814","maxx":"-90.5055113",
+                            "miny":"14.60793","maxy":"14.608161"
                         },
                         "code": "e9dc",
-                        "hint1":"hola1",
-                        "hint2":"hola2",
-                        "pregunta":"Donde es esto",
-                        "name":"Estacion misteriosa4"
+                        "hint1":"Donde se guardan las reliquias",
+                        "hint2":"Enfrente del Museo",
+                        "pregunta":"Donde los mayas guardan su historia",
+                        "name":"Estacion de la accion"
                     },{
                         "id":"5",
                         "coords": {
-                            "x1":"-90.506092","y1":"14.605294",
-                            "x2":"-90.506283","y2":"14.605427",
-                            "x3":"-90.50628688","y3":"14.60521395",
-                            "x4":"-90.50643709","y4":"14.6053888"
+                            "minx":"-90.506437","maxx":"-90.506092",
+                            "miny":"14.605214","maxy":"14.605427"
                         },
                         "code": "k84c",
-                        "hint1":"hola1",
-                        "hint2":"hola2",
-                        "pregunta":"Donde es esto",
-                        "name":"Estacion misteriosa5"
+                        "hint1":"Multiples franquicias de restaurantes",
+                        "hint2":"Cafeteria Agora",
+                        "pregunta":"Donde los libertarios se reunen a comer",
+                        "name":"Estacion sorprendente"
                     },{
                         "id":"6",
                         "coords": {
-                            "x1":"-90.505867","y1":"14.604652",
-                            "x2":"-90.5061779","y2":"14.6048341",
-                            "x3":"-90.506124","y3":"14.604449",
-                            "x4":"-90.50624299","y4":"14.60484282"
+                            "minx":"-90.506243","maxx":"-90.505867",
+                            "miny":"14.604449","maxy":"14.60484282"
                         },
                         "code": "i75j",
-                        "hint1":"hola1",
-                        "hint2":"hola2",
-                        "pregunta":"Donde es esto",
-                        "name":"Estacion misteriosa6"
+                        "hint1":"Estacionamiento de catedraticos",
+                        "hint2":"7mo nivel edificio academico",
+                        "pregunta":"Lugar mas alto de la universidad",
+                        "name":"Estacion crypto"
                     }]
                 }
              }
@@ -198,10 +192,39 @@ class Game extends Component {
 
   }
 
+  getReward(uid, amount) {
+    fetch(`/api/getReward?uid=${uid}&amount=${amount}.0000`)
+    .then(res => res.json())
+    .then(transaction => this.setState({ transaction }))
+    .catch(err => err)
+  }
+
+  getHint(uid, amount){
+    fetch(`/api/getHint?uid=${uid}&amount=${amount}.0000`)
+    .then(res => res.json())
+    .then(transaction => this.setState({ transaction }))
+    .catch(err => err)
+  }
+
+
+  calcQ(q) {
+    const when = this.state.start
+    const now = moment()
+    const diff = when.diff(now, 'minutes')
+    const calc = Math.floor(((60-diff)/60)*q)
+    return calc
+}
+
+
+
     showHint1() {
         if (this.state.hint1 === false) {
             const current = this.state.current
             const hint = this.state.data.stations[current].hint1
+            var user = firebase.auth().currentUser;
+            const uid = user.uid
+            const calc = this.calcQ(25)
+            this.getHint(uid,calc)
             alert(hint)
             //ACA QUITAR PUNTOS
             this.setState({
@@ -218,6 +241,10 @@ class Game extends Component {
         if (this.state.hint2 === false) {
             const current = this.state.current
             const hint = this.state.data.stations[current].hint2
+            var user = firebase.auth().currentUser;
+            var uid = user.uid
+            const calc = this.calcQ(45)
+            this.getHint(uid,calc)
             alert(hint)
             //ACA QUITAR PUNTOS
             this.setState({
@@ -237,8 +264,14 @@ class Game extends Component {
         })
         const actual = this.state.current
         const station = this.state.data.stations[actual]
+        const ymax = this.state.data.stations[actual].maxy
+        const ymin = this.state.data.stations[actual].miny
+        const xmax = this.state.data.stations[actual].maxx
+        const xmin = this.state.data.stations[actual].minx
+        
+
         this.getLocation()
-        if(station.code === event.target.value) {
+        if((station.code === event.target.value) /*&& (xmin < this.state.longitude) && (this.state.longitude < xmax) && (ymin < this.state.latitude) && (this.state.latitude < ymax)*/) {
             this.setState({
                 ...this.state,
                 valid: true
@@ -260,8 +293,13 @@ class Game extends Component {
 
     }
 
+    //25 45 70    60-loquelleva /60  * cost hint 
     nextStation() {
         // ACA REWARD
+        var user = firebase.auth().currentUser;
+        const uid = user.uid
+        const calc = this.calcQ(70)
+        this.getReward(uid,calc)
         if (this.state.current+1 < this.state.data.stations.length) {
             console.log('len', this.state.data.stations.length)
             console.log("station", this.state.current, this.state.data)
@@ -285,7 +323,7 @@ class Game extends Component {
     }
 
     renderStation() {
-
+        console.log("hour", this.state.start)
         const currentp = this.state.current
         const station = this.state.data.stations[currentp]
         return (
@@ -296,6 +334,7 @@ class Game extends Component {
                 <div className="header">
                     <LocationOnIcon className="icon" />
                     <div> {station.name} </div>
+                    <div> {station.pregunta} </div>
                 </div>
                 <div className="header">
                      <TextField
