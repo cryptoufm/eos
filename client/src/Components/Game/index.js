@@ -297,7 +297,7 @@ class Game extends Component {
 
     //25 45 70    60-loquelleva /60  * cost hint 
     nextStation() {
-        // ACA REWARD
+        /// ACA REWARD
         var user = firebase.auth().currentUser;
         //const uid = user.uid
         const uid = 'GFEDCBA'   
