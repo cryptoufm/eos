@@ -210,7 +210,7 @@ class Game extends Component {
   calcQ(q) {
     const when = this.state.start
     const now = moment()
-    const diff = now.diff(when, 'minutes')
+    const diff = now.diff(now, 'minutes')
     const calc = Math.floor(((60-diff)/60)*q)
     return calc
 }
@@ -300,7 +300,7 @@ class Game extends Component {
         // ACA REWARD
         var user = firebase.auth().currentUser;
         //const uid = user.uid
-             
+        const uid = 'GFEDCBA'   
         const calc = this.calcQ(70)
         this.getReward(uid,calc)
         if (this.state.current+1 < this.state.data.stations.length) {
