@@ -100,6 +100,45 @@ app.get('/api/', async function(req,res) {
 
 });
 
+
+app.get('/api/getBalance', async function(req,res) {
+  //cantidad = req.query.cantidad
+  let uid = req.query.uid;
+  async function processData(uid) {
+    var options={
+      uri: `http://54.163.3.27:5000/getBalance?uid=${uid}`,
+      method: 'GET'
+    }
+    let response = await rp(options);
+    //console.log(JSON.parse("[" + response + "]"));
+    return response;
+  }
+  var done = await processData(uid)
+  res.json( done );
+
+});
+
+app.get('/api/createAccount', async function(req,res) {
+  //cantidad = req.query.cantidad
+  let uid = req.query.uid;
+  let username = req.query.username;
+
+  async function processData(uid,username) {
+    var options={
+      uri: `http://3.87.208.133:5000/createAccount?uid=${uid}&username=${username}`,
+      method: 'GET'
+    }
+    let response = await rp(options);
+    console.log(JSON.parse("[" + response + "]"));
+    return response;
+  }
+  var done = await processData(uid, username)
+  res.json( done );
+
+});
+
+
+
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
 //   next(createError(404));

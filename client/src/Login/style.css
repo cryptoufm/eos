@@ -1,0 +1,21 @@
+.d1{
+    margin-left: 8%;
+    margin-top: 10%;
+    text-align: center;
+    
+}
+
+.pageI{
+    background-image: url("bottom.png");
+    height: 100%;
+    background-size: cover;
+}
+
+.photo-user{
+    margin-bottom: 3%;
+    position: relative;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+    bottom: 53%;
+}
