@@ -37,7 +37,7 @@ app.get('/api/getRanking', async function(req,res) {
 
   async function processData() {
     var options={
-      uri: `http://54.163.3.27:5000/getScores`,
+      uri: `http://3.87.208.133:5000/getScores`,
       method: 'GET'
     }
     let response = await rp(options);
@@ -55,7 +55,7 @@ app.get('/api/getReward', async function(req,res) {
   const uid = req.query.uid
   async function processData(amount, uid) {
     var options={
-      uri: `http://54.163.3.27:5000/getReward?uid=${uid}&amount=${amount}`,
+      uri: `http://3.87.208.133:5000/getReward?uid=${uid}&amount=${amount}`,
       method: 'GET'
     }
     let response = await rp(options);
@@ -72,7 +72,7 @@ app.get('/api/getHint', async function(req,res) {
   const uid = req.query.uid
   async function processData(amount, uid) {
     var options={
-      uri: `http://54.163.3.27:5000/getHint?uid=${uid}&amount=${amount}`,
+      uri: `http://3.87.208.133:5000/getHint?uid=${uid}&amount=${amount}`,
       method: 'GET'
     }
     let response = await rp(options);
@@ -88,7 +88,7 @@ app.get('/api/', async function(req,res) {
   //cantidad = req.query.cantidad
   async function processData() {
     var options={
-      uri: `http://54.163.3.27:5000/getScores`,
+      uri: `http://3.87.208.133:5000/getScores`,
       method: 'GET'
     }
     let response = await rp(options);
@@ -106,7 +106,7 @@ app.get('/api/getBalance', async function(req,res) {
   let uid = req.query.uid;
   async function processData(uid) {
     var options={
-      uri: `http://54.163.3.27:5000/getBalance?uid=${uid}`,
+      uri: `http://3.87.208.133:5000/getBalance?uid=${uid}`,
       method: 'GET'
     }
     let response = await rp(options);
