@@ -210,7 +210,7 @@ class Game extends Component {
   calcQ(q) {
     const when = this.state.start
     const now = moment()
-    const diff = when.diff(now, 'minutes')
+    const diff = now.diff(when, 'minutes')
     const calc = Math.floor(((60-diff)/60)*q)
     return calc
 }
@@ -221,8 +221,9 @@ class Game extends Component {
         if (this.state.hint1 === false) {
             const current = this.state.current
             const hint = this.state.data.stations[current].hint1
-            var user = firebase.auth().currentUser;
-            const uid = user.uid
+            //var user = firebase.auth().currentUser;
+            //const uid = user.uid
+            const uid = 'GFEDCBA'
             const calc = this.calcQ(25)
             this.getHint(uid,calc)
             alert(hint)
@@ -241,8 +242,9 @@ class Game extends Component {
         if (this.state.hint2 === false) {
             const current = this.state.current
             const hint = this.state.data.stations[current].hint2
-            var user = firebase.auth().currentUser;
-            var uid = user.uid
+            //var user = firebase.auth().currentUser;
+            //var uid = user.uid
+            const uid = 'GFEDCBA'
             const calc = this.calcQ(45)
             this.getHint(uid,calc)
             alert(hint)
@@ -271,7 +273,7 @@ class Game extends Component {
         
 
         this.getLocation()
-        if((station.code === event.target.value) && (xmin < this.state.longitude) && (this.state.longitude < xmax) && (ymin < this.state.latitude) && (this.state.latitude < ymax)) {
+        if((station.code === event.target.value) /*&& (xmin < this.state.longitude) && (this.state.longitude < xmax) && (ymin < this.state.latitude) && (this.state.latitude < ymax)*/) {
             this.setState({
                 ...this.state,
                 valid: true
@@ -297,7 +299,8 @@ class Game extends Component {
     nextStation() {
         // ACA REWARD
         var user = firebase.auth().currentUser;
-        const uid = user.uid
+        //const uid = user.uid
+             
         const calc = this.calcQ(70)
         this.getReward(uid,calc)
         if (this.state.current+1 < this.state.data.stations.length) {
