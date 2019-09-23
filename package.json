@@ -2,8 +2,8 @@
   "name": "eos-hunt",
   "version": "0.0.0",
   "scripts": {
-  "start": "node index.js",
-  "heroku-postbuild": "cd client && npm install && npm start"
+    "start": "node index.js",
+    "heroku-postbuild": "cd client && npm install && npm start"
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
