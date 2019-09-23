@@ -21,7 +21,7 @@ class Profile extends Component {
   constructor(props){
     super(props);
     this.state = {
-      list: []
+      balance: "200000"
     }
   }
 
@@ -35,18 +35,10 @@ class Profile extends Component {
     //console.log(this.state.list)
   }
 
-  // getList = () => {
-  //   fetch('54.163.3.27:5000/createAccount?uid=${uid}&account=${user}')
-  //   .then(res => res.json())
-  //   .then(list => this.setState({ list }))
-  //   .catch(err => err)
-  // }
-
   render() {
 
     var user = firebase.auth().currentUser;
     var name, email, photoUrl, uid, emailVerified, name2;
-    console.log(user);
 
     if (user != null) {
       name = user.displayName;
@@ -57,20 +49,19 @@ class Profile extends Component {
     }
     console.log(uid);
 
-    //var resp;
 
-    fetch(`http://54.163.3.27:5000/createAccount?uid=${uid}&account=${name2}`)
+    fetch(`/api/getBalance?uid=${uid}`)
       .then(res => res.json())
-      .then(data => resp = data)
-      .then(() => console.log(resp))
+      .then(balance => this.setState({ balance }))
       .catch(err => err)
     //const urls = `http://54.163.3.27:5000/createAccount?uid=${uid}&account=${name2}`
 
 
     const { list } = this.state;
     console.log("lista", list) 
-    //resp = JSON.parse(resp);
-    //http://54.163.3.27:5000/createAccount?uid=askdfjqkwjerr&account=ricardojmv
+    var resp = this.state.balance;
+    var pars = JSON.parse(resp);
+    
 
     return (
 
@@ -85,7 +76,7 @@ class Profile extends Component {
         <Grid container alignItems="center">
           <Grid item xs>
             <Typography gutterBottom variant="h6">
-              {obj}
+              
             </Typography>
             <Typography gutterBottom variant="h4" >
               {name} 
@@ -117,7 +108,7 @@ class Profile extends Component {
             </Grid>
             <Grid item>
                 <Typography gutterBottom variant="h6">
-                    150.0000 Mises
+                {pars.balance}
                 </Typography>
             </Grid>
         </Grid>
@@ -135,88 +126,3 @@ class Profile extends Component {
 
 
   export default Profile
-
-
-// function Profile() {
-//     // const defaultPrivateKey = "5JZ2YfAQewJxPEspQ7aqcdZx5eNPkPQgpRw1WopwixLU56XAeL8"; // bob
-//     // const signatureProvider = new JsSignatureProvider([defaultPrivateKey]);
-//     // const rpc = new JsonRpc('https://jungle2.cryptolions.io', { fetch });
-//     // rpc.get_currency_balance('eosio.token', 'ricardojmv54', 'EOS').then((balance) => console.log("account", balance));
-//     return (
-//     <div className="page">
-//         <div className="header">
-//             {/*
-//             <img 
-//                 className="user-photo"
-//                 //src="https://scontent-mia3-2.xx.fbcdn.net/v/t1.0-9/19990550_320504011710462_6233984476058453731_n.jpg?_nc_cat=108&_nc_oc=AQmR0T4NP73IDG4np1E9mU5bJNsAmGzlCxrtRzb5ol8ztra1rcefx1Wx0p3lHMhlbag&_nc_ht=scontent-mia3-2.xx&oh=ff41751e6aca773d7510a135c8e4f800&oe=5DF13CFA"
-//                 src={Usuario}
-//             />
-//             */}
-//         </div>
-//         <div className="detalles">
-            
-
-//         <div className="hola">
-//         <Grid container alignItems="center">
-//           <Grid item xs>
-//             <Typography gutterBottom variant="h4">
-//             Satoshi
-//             </Typography>
-//             <Typography gutterBottom variant="h4">
-//             Nakamoto
-//             </Typography>
-//           </Grid>
-//           <Grid item>
-//             <Typography gutterBottom variant="h6">
-            
-//             </Typography>
-//           </Grid>
-//         </Grid>
-
-//         {/*CUENTA */}
-//         <Grid container alignItems="center" className="cuenta">
-//             <Grid item xs={1}>
-//             <PersonIcon color="secondary" />
-//             </Grid>
-//             <Grid item>
-//                 <Typography gutterBottom variant="h6">
-//                     NakaToshi2323
-//                 </Typography>
-//             </Grid>
-//         </Grid>
-
-//         {/*Balance */}
-//         <Grid container alignItems="center" className="cuenta">
-//             <Grid item xs={1}>
-//             <LocalAtmIcon color="secondary" />
-//             </Grid>
-//             <Grid item>
-//                 <Typography gutterBottom variant="h6">
-//                     150.0000 MarroCoins
-//                 </Typography>
-//             </Grid>
-//         </Grid>
-
-
-//         {/*Cuenta Publica
-//         <Grid container alignItems="center" className="cuenta">
-//             <Grid item xs={1}>
-//             <AccountTreeIcon color="secondary" />
-//             </Grid>
-//             <Grid item>
-//                 <Typography gutterBottom variant="h6">
-//                     150.0000 MarroCoins
-//                 </Typography>
-//             </Grid>
-//         </Grid>
-//         */}
-
-//         <Button variant="outlined" color="primary"> Private Key</Button>
-//       </div>
-
-//         </div>
-//     </div>
-//     );
-//   }
-
-//   export default Profile;
