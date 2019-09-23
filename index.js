@@ -33,7 +33,7 @@ app.get('/api/getList', function(req,res) {
   res.json(list);
 });
 
-app.get('/getRanking', async function(req,res) {
+app.get('/api/getRanking', async function(req,res) {
 
   async function processData() {
     var options={
@@ -41,13 +41,64 @@ app.get('/getRanking', async function(req,res) {
       method: 'GET'
     }
     let response = await rp(options);
+    //console.log(JSON.parse("[" + response + "]"));
     return response;
   }
   var done = await processData()
-  res.send( done );
+  res.json( done );
 
 });
 
+app.get('/api/getReward', async function(req,res) {
+
+  const amount = req.query.amount
+  const uid = req.query.uid
+  async function processData(amount, uid) {
+    var options={
+      uri: `http://54.163.3.27:5000/getReward?uid=${uid}&amount=${amount}`,
+      method: 'GET'
+    }
+    let response = await rp(options);
+    //console.log(JSON.parse("[" + response + "]"));
+    return response;
+  }
+  var done = await processData(amount, uid)
+  res.json( done );
+
+});
+
+app.get('/api/getHint', async function(req,res) {
+  const amount = req.query.amount
+  const uid = req.query.uid
+  async function processData(amount, uid) {
+    var options={
+      uri: `http://54.163.3.27:5000/getHint?uid=${uid}&amount=${amount}`,
+      method: 'GET'
+    }
+    let response = await rp(options);
+    //console.log(JSON.parse("[" + response + "]"));
+    return response;
+  }
+  var done = await processData(amount, uid)
+  res.json( done );
+
+});
+
+app.get('/api/', async function(req,res) {
+  //cantidad = req.query.cantidad
+  async function processData() {
+    var options={
+      uri: `http://54.163.3.27:5000/getScores`,
+      method: 'GET'
+    }
+    let response = await rp(options);
+    //console.log(JSON.parse("[" + response + "]"));
+    return response;
+  }
+  var done = await processData()
+  res.json( done );
+
+});
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {

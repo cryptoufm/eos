@@ -9,7 +9,9 @@ import Paper from '@material-ui/core/Paper';
 import { styles }  from './ranking.css';
 import players from'./players';
 import Footer from '../Footer';
-
+import Grid from '@material-ui/core/Grid';
+import PersonIcon from '@material-ui/icons/Person';
+import LocalAtmIcon from '@material-ui/icons/LocalAtm';
 
 
 
@@ -22,70 +24,52 @@ class Ranking extends Component {
     }
   }
 
-  createData(name, Tokens) {
-    return { name, Tokens};
+  componentWillMount() {
+    this.getRows();
   }
 
+  getRows = () => {
+    fetch('/api/getRanking')
+    .then(res => res.json())
+    .then(rows => this.setState({ rows }))
+    .catch(err => err)
+  }
 
+  renderTable(staterows) {
+    let rowsjson = JSON.parse("[" + staterows + "]");
+    const json = rowsjson[0]
+    console.log("hola", json)
+    return  (
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell id="players">Jugadores</TableCell>
+            <TableCell>$ Mises $ </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          { json.map((row) => (
+            <TableRow key={row.name}>
+              <TableCell component="th" scope="row">
+                {row.name}
+              </TableCell>
+              <TableCell>{row.balance}</TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    )
+  }
 
   render() {
 
-  //<JsonToTable json={players} />  
-
-    // const rows = [
-    // this.createData('Luis Araneda', 148),
-    // this.createData('Nicole Stackmann', 119),
-    // this.createData('Pamela ', 109),
-    // this.createData('Juan Pablo Safie', 64),
-    // this.createData('Melgar', 0),
-    // ];
-
-    const rows = [{
-         "name":"Luis Araneda",
-         "balance":"178.00"
-      },
-      {
-         "name":"Nicole Stackmann",
-         "balance":"143.00"
-      },
-      {
-         "name":"Juan Pablo Safie",
-         "balance":"99.00"
-      },
-      {
-         "name":"Astrid Morales",
-         "balance":"66.00"},
-      {
-         "name":"Alejandro Melgar",
-         "balance":"17.00"
-      }]
-
-    console.log(rows)
-
     return(
-      <div>
+      <div id='wrapper'>
         <div id="title">
           Ranking
         </div>
         <div id="tableContainer">
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell id="players">Jugadores</TableCell>
-                <TableCell>$ Mises $ </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row, index) => (
-                <TableRow key={index}>
-                  <TableCell component="th" scope="row">
-                    {row.name}
-                  </TableCell>
-                  <TableCell>{row.balance}</TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          {(this.state.rows.length > 0) ? this.renderTable(this.state.rows) : null}
         </div>
       <Footer />
     </div>

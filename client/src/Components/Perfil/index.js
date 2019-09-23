@@ -65,7 +65,7 @@ class Profile extends Component {
             </Grid>
             <Grid item>
                 <Typography gutterBottom variant="h6">
-                    150.0000 MarroCoins
+                    150.0000 Mises
                 </Typography>
             </Grid>
         </Grid>

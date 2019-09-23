@@ -6,6 +6,7 @@ import List from './Components/List';
 import Account from './Components/List';
 import Profile from './Components/Perfil';
 import Ranking from './Components/Ranking';
+import Game from './Components/Game';
 
 class App extends Component {
   render() {
@@ -16,6 +17,7 @@ class App extends Component {
           <Route path='/list' component={List}/>
           <Route path='/profile' component={Profile}/>
           <Route path='/ranking' component={Ranking}/>
+          <Route path='/game' component={Game}/>
         </Switch>
       </div>
     )

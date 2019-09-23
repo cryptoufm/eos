@@ -31,14 +31,15 @@ class Footer extends Component {
               <Link to={'./profile'}>
                 <BottomNavigationAction label="Account" icon={<PersonIcon />} />
               </Link>
-              <BottomNavigationAction label="Game" icon={<FavoriteIcon />} />
-              <Link to={'./list'}>
-                <BottomNavigationAction label="List" icon={<BarChartIcon />} />
+              <Link to={'./game'}>
+                <BottomNavigationAction label="Game" icon={<FavoriteIcon />} />
               </Link>
               <Link to={'./ranking'}>
                 <BottomNavigationAction label="Ranking" icon={<BarChartIcon />} />
               </Link>
-              <BottomNavigationAction label="Map" icon={<LocationOnIcon />} />
+              <Link to={'./ranking'}>
+                <BottomNavigationAction label="Map" icon={<LocationOnIcon />} />
+              </Link>
             </BottomNavigation>
           </div>
         </Paper>
