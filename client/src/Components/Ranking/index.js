@@ -86,7 +86,7 @@ class Ranking extends Component {
           Ranking
         </div>
         <div id="tableContainer">
-          {(this.state.rows.length > 0) ? this.renderTable(this.state.rows) : null}
+          {(this.state.rows.length > 0 && this.state.rows.indexOf("error") === -1) ? this.renderTable(this.state.rows) : null}
         </div>
       <Footer />
     </div>

@@ -10,11 +10,13 @@ import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import Footer from '../Footer';
 import firebase from "firebase"
 import EmailIcon from '@material-ui/icons/Email';
+import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
+
 
 // import { Api, JsonRpc, RpcError } from 'eosjs';
 // import { Api, JsonRpc, RpcError } from 'eosjs';
 // import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig';
-
+var nombres;
 
 class Profile extends Component {
 
@@ -29,13 +31,27 @@ class Profile extends Component {
     firebase.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user })
         console.log("user", user)
+
+      /*
+      nombres = firebase.auth().currentUser.displayName;
+      fetch(`/api/getProfile?uid=${firebase.auth.currentUser.uid}`)
+      .then(res => res.json())
+      .then(info => this.setState({ info }))
+      .catch(err => err)
+      */
+     
+      //let rowsjson = JSON.parse("[" + this.state.info + "]");
+      //const json = rowsjson[0]
+
     })
 
-    //this.getList();
-    //console.log(this.state.list)
+    // function llamar_carlos():
+    //    cujcuj = cujcujx3
+    //    return(carlos aparece)
   }
 
   render() {
+
 
     var user = firebase.auth().currentUser;
     var name, email, photoUrl, uid, emailVerified, name2;
@@ -47,31 +63,32 @@ class Profile extends Component {
       uid = user.uid;
       name2 = name.replace(/ +/g, "");
     }
-    console.log(uid);
 
 
+    /*
     fetch(`/api/getBalance?uid=${uid}`)
       .then(res => res.json())
       .then(balance => this.setState({ balance }))
       .catch(err => err)
+    */
     //const urls = `http://54.163.3.27:5000/createAccount?uid=${uid}&account=${name2}`
 
 
     const { list } = this.state;
     console.log("lista", list) 
-    var resp = this.state.balance;
-    var pars = JSON.parse(resp);
-    
+
+     
 
     return (
 
     <div className="page">
         <Footer />
         <div className="header">
-            <img className="user-photo" src={photoUrl} />
+            
         </div>
 
         <div className="detalles">
+        <img className="user-photo" src={photoUrl} />
         <div className="hola">
         <Grid container alignItems="center">
           <Grid item xs>
@@ -91,7 +108,7 @@ class Profile extends Component {
         {/*CUENTA */}
         <Grid container alignItems="center" className="cuenta">
             <Grid item xs={1}>
-            <EmailIcon color="secondary" />
+            <PersonIcon color="secondary" />
             </Grid>
             <Grid item>
                 <Typography gutterBottom variant="h7">
@@ -108,12 +125,12 @@ class Profile extends Component {
             </Grid>
             <Grid item>
                 <Typography gutterBottom variant="h6">
-                {pars.balance}
+                20000
                 </Typography>
             </Grid>
         </Grid>
 
-        <Button variant="outlined" color="primary"> Private Key</Button>
+        <Button variant="outlined" color="primary" onClick={() => alert("5Js36uNKqHvanD6MU2XScMHchs5k733azdRRKzGJcQT3roTmdCd")} > Private Key</Button>
         <p> </p>
         <Button variant="outlined" color="primary" onClick={() => firebase.auth().signOut()}>Sign out</Button>
       </div>
