@@ -38,9 +38,9 @@ class Ranking extends Component {
   renderTable(staterows) {
     let rowsjson = JSON.parse("[" + staterows + "]");
     const json = rowsjson[0]
-    console.log("hola", json)
+    console.log("hey", json)
     return  (
-      <Table>
+      <Table id='tabla'>
         <TableHead>
           <TableRow>
             <TableCell id="players">Jugadores</TableCell>
@@ -51,9 +51,26 @@ class Ranking extends Component {
           { json.map((row) => (
             <TableRow key={row.name}>
               <TableCell component="th" scope="row">
-                {row.name}
+                <Grid container alignItems = 'center'>
+                  <Grid item xs={0}>
+                    <PersonIcon color = 'secondary'/>
+                  </Grid>
+                  <Grid item>
+                    {row.name}
+                  </Grid>
+                </Grid>  
               </TableCell>
-              <TableCell>{row.balance}</TableCell>
+              <TableCell>
+                <Grid container alignItems='Center'>
+                  <Grid item xs={0}>
+                   <LocalAtmIcon color  = 'secondary'/>
+                  </Grid>
+                  <Grid item>
+                   {row.balance}
+                  </Grid>
+                </Grid>
+                
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

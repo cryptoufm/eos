@@ -1,8 +1,10 @@
 #wrapper {
   width: 100%;
   height: 100%;
-  
+  font-size: 40px;
   color: #FFF !important;
+
+
 }
 
 #title {
@@ -10,18 +12,19 @@
   font-size: 40px;
   font-weight: bold;
   margin: 10px;
-  color: rgb(63,81,167)
+  color: rgb(63,81,167);
+  font-family:'Bebas Kai';
 
 }
 
-.MuiTable-root{
-  color:#fff !important;
+.MuiTableCell-body {
+  color: #fff !important; 
+  font-weight: 400;
 }
 
-#tabla{
-  
-color:#FFF !important;
-
+td.ae-zone {
+  background-color: '#e57373' !important;
+  color: "white" !important;
 }
 
 #tableContainer {
@@ -41,11 +44,6 @@ color:#FFF !important;
 
 #players {
 	font-size: 20px;
-}
-
-#token{
-
-
 }
 
 
