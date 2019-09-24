@@ -57,8 +57,8 @@ class Game extends Component {
                     {
                         "id":"2",
                         "coords": {
-                            "minx":"-90.505676","maxx":"-90.605432",
-                            "miny":"14.594363","maxy":"14.60594"
+                            "minx":"-90.505722","maxx":"-90.505661",
+                            "miny":"14.605732","maxy":"14.605829"
                         },
                         "code": "xym9",
                         "hint1":"Leyendo se aprende",
