@@ -23,7 +23,7 @@ class Profile extends Component {
   constructor(props){
     super(props);
     this.state = {
-      info: []
+      balance: "200000"
     }
   }
 
@@ -48,7 +48,6 @@ class Profile extends Component {
     //    return(carlos aparece)
   }
 
-  
   render() {
 
 

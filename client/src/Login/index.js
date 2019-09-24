@@ -37,36 +37,31 @@ class Login extends Component {
       this.setState({ isSignedIn: !!user })
       console.log("user", user)
 
-      var nombre = firebase.auth.currentUser.displayName;
-      var name2 = nombre.replace(/ +/g, "");
-      /*
-      fetch(`/api/createAccount?uid=${firebase.auth.currentUser.uid}&username=${name2}`)
-      .then(res => res.json())
-      .then(respuesta => this.setState({ respuesta }))
-      .catch(err => err)
-      */
-
 
     })
 
     
   }
 
+
+  createAccount() {
+    var user = firebase.auth().currentUser;
+    const uid = user.uid;
+    const name1 = user.displayName; 
+    var name2 = name1.replace(/ +/g, "");
+    name2 = name2.padEnd(5, '0')
+    if(name2.length > 6) name2 = name2.substring(0,6);
+
+      fetch(`/api/createAccount?uid=${uid}&username=${name2}`)
+      .then(res => res.json())
+      .then(respuesta => this.setState({ respuesta }))
+      .catch(err => err)
+  }
+
   render() {
 
     var user = firebase.auth().currentUser;
     var name, email, photoUrl, uid, emailVerified, name2;
-
-    if (user != null) {
-      name = user.displayName;
-      email = user.email;
-      photoUrl = user.photoURL;
-      uid = user.uid;
-      name2 = name.replace(/ +/g, "");
-    }
-
-    
-
 
     return (
       <div className="pageI">
@@ -87,7 +82,7 @@ class Login extends Component {
               />
             </div>
             <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
-      
+            <button onClick={() => this.createAccount()}>Join Human Action!</button>
         
           </div>
         ) : (
