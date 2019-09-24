@@ -28,6 +28,7 @@ class Game extends Component {
                  gameOver: false,
                  order: [1, 2, 3, 4, 5, 6],
                  current: 0,
+                 tried: false,
                  hint1: false,
                  hint2: false,
                  valid: false,
@@ -69,7 +70,7 @@ class Game extends Component {
                             "miny":"14.60752","maxy":"14.607782"
                         },
                         "code": "b4rc",
-                        "hint1":"Conduciendo se puede ver...",
+                        "hint1":"Conduciendo al parqueo se puede ver",
                         "hint2":"Redondel enfrente del museo",
                         "pregunta":"Nudo en un redondel",
                         "name":"Estacion capitalista"
@@ -262,7 +263,8 @@ class Game extends Component {
     handleCodeChange(event) {
         this.setState({
             ...this.state,
-            guess: event.target.value
+            guess: event.target.value,
+            tried: true,
         })
         const actual = this.state.current
         const station = this.state.data.stations[actual]
@@ -270,7 +272,6 @@ class Game extends Component {
         const ymin = this.state.data.stations[actual].miny
         const xmax = this.state.data.stations[actual].maxx
         const xmin = this.state.data.stations[actual].minx
-        
 
         this.getLocation()
         if((station.code === event.target.value) /*&& (xmin < this.state.longitude) && (this.state.longitude < xmax) && (ymin < this.state.latitude) && (this.state.latitude < ymax)*/) {
@@ -310,7 +311,8 @@ class Game extends Component {
             this.setState({
                 ...this.state,
                 current: actual + 1,
-                valid: false
+                valid: false,
+                tried: false
              })
 
         }
@@ -329,6 +331,10 @@ class Game extends Component {
         console.log("hour", this.state.start)
         const currentp = this.state.current
         const station = this.state.data.stations[currentp]
+        const hint1 = this.state.data.stations[currentp].hint1
+        const hint2 = this.state.data.stations[currentp].hint2
+        console.log(hint1)
+        console.log(hint2)
         return (
             <div>
                 <div >      
@@ -336,13 +342,21 @@ class Game extends Component {
                 {/*CUENTA */}
                 <div className="header">
                     <LocationOnIcon className="icon" />
-                    <div> {station.name} </div>
+                    <div className="stationTitle"> {station.name} </div>
                     <div> {station.pregunta} </div>
                 </div>
+                {(this.state.tried && !this.state.valid) ?
+                    <div  className="wrong">
+                        Codigo incorrecto
+                    </div>
+                    : null
+                }
                 <div className="header">
                      <TextField
+                        error={(this.state.tried && !this.state.valid)}
+                        id="outlined-error"
                         id="outlined-email-input"
-                        label="code"
+                        label="Ingresa el codigo"
                         type="code"
                         name="code"
                         autoComplete="Ingresa el codigo"
@@ -352,12 +366,14 @@ class Game extends Component {
                     />
                 </div>
                 <div id="hints">
-                    <div>
-                        need help?
+                    <div  className="text">
+                        necesitas ayuda? <br /> Esta ayuda tiene un costo
                     </div>
-                    {!this.state.hint1 ? <Button variant="outlined" color="primary" onClick={() => this.showHint1()}> Hint </Button> : null}
-                    {(this.state.hint1 && !this.state.hint2) ? <Button variant="outlined" color="primary" onClick={() => this.showHint2()}> Even better than the last one</Button> : null}
+                    {!this.state.hint1 ? <Button variant="outlined" color="primary" onClick={() => this.showHint1()}> Pista </Button> : null}
+                    {this.state.hint1 ? <div className="text"> <b>Hint1: </b> {hint1}</div> : null}
+                    {(this.state.hint1 && !this.state.hint2) ? <Button variant="outlined" color="primary" onClick={() => this.showHint2()}> Pista (mejor que la anterior)</Button> : null}
                     {this.state.valid ? <Button variant="outlined" color="primary" onClick={() => this.nextStation()}> Next challenge </Button> : null}
+                    {this.state.hint2 ? <div  className="text">  <b>Hint2: </b> {hint2}</div> : null}
                 </div>
               </div>
             </div>
