@@ -14,6 +14,7 @@ import { styles }             from './styles.css'
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import moment from 'moment';
 import firebase from "firebase"
+// import { currentId } from 'async_hooks';
 
 
 class Game extends Component {
@@ -114,9 +115,13 @@ class Game extends Component {
              }
          }
 
-    // componentDidMount() {
-    //     this.getLocation();
-    // }
+    componentWillMount() {
+        var user = firebase.auth().currentUser;
+        this.setState({
+            currentUser: user
+        })
+        console.log("current user", this.state.currentUser)
+    }
 
 
     handleSubmit = (event) => {
@@ -297,22 +302,29 @@ class Game extends Component {
         .then(res => res.json())
         .then(joinResult => this.setState({ joinResult }))
         .catch(err => err)
+
+        console.log("join result", this.state.joinResult)
     }
 
-    joinValidation() {
+     joinValidation() {
+
         const code = this.state.joinCode
         //var user = firebase.auth().currentUser;
         //var uid = user.uid
         const uid = '1234567890'
         const hour = moment()
-        this.join(uid, code, hour)
-        if(this.state.joinResult.indexOf('error') === -1) {
-            localStorage.setItem('matchCode', this.state.joinCode);
-            this.setState({
-                ...this.state,
-                join: true
-            })
+         this.join(uid, code, hour)
+        if( this.state.joinResult) {
+            console.log("join ", this.state.joinResult)
+            if(this.state.joinResult.indexOf('error') === -1) {
+                localStorage.setItem('matchCode', this.state.joinCode);
+                this.setState({
+                    ...this.state,
+                    join: true
+                })
+            }
         }
+
     }
 
     isValid() {
@@ -396,14 +408,14 @@ class Game extends Component {
                     <LocationOnIcon className="icon" />
                     <div className="stationTitle"> {station.name} </div>
                     <div className="stationSub"> {station.pregunta} </div>
-                {(this.state.tried && !this.state.valid) ?
+                {/*(this.state.tried && !this.state.valid) ?
                     <div  className="wrong">
                         Codigo incorrecto
                     </div>
-                    : null
+                    : null*/
                 }
                      <TextField
-                        error={(this.state.tried && !this.state.valid)}
+                        //error={(this.state.tried && !this.state.valid)}
                         id="outlined-error"
                         id="outlined-email-input"
                         label="Ingresa el codigo"
