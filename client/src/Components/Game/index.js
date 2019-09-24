@@ -211,8 +211,9 @@ class Game extends Component {
   calcQ(q) {
     const when = this.state.start
     const now = moment()
-    const diff = now.diff(now, 'minutes')
-    const calc = Math.floor(((60-diff)/60)*q)
+    const diff = when.diff(now, 'minutes')
+    console.log("diferencia", diff)
+    const calc = Math.floor(((60-diff)/60)*q) ///DUDAAAA
     return calc
 }
 
@@ -227,7 +228,7 @@ class Game extends Component {
             const uid = '987654321'
             const calc = this.calcQ(25)
             this.getHint(uid,calc)
-            alert(hint)
+            alert(`se debito ${calc} Mises de tu cuenta de blockchain`)
             //ACA QUITAR PUNTOS
             this.setState({
                 ...this.state,
@@ -248,7 +249,7 @@ class Game extends Component {
             const uid = '987654321'
             const calc = this.calcQ(45)
             this.getHint(uid,calc)
-            alert(hint)
+            alert(`se debito ${calc} Mises de tu cuenta de blockchain`)
             //ACA QUITAR PUNTOS
             this.setState({
                 ...this.state,
@@ -301,9 +302,10 @@ class Game extends Component {
         /// ACA REWARD
         var user = firebase.auth().currentUser;
         //const uid = user.uid
-        const uid = '987654321'   
+        const uid = '987654321'
         const calc = this.calcQ(70)
         this.getReward(uid,calc)
+        //alert(`ganaste ${calc} Mises, se remuneraron en tu cuenta de blockchain`)
         if (this.state.current+1 < this.state.data.stations.length) {
             console.log('len', this.state.data.stations.length)
             console.log("station", this.state.current, this.state.data)
