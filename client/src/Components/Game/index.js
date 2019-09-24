@@ -224,7 +224,7 @@ class Game extends Component {
             const hint = this.state.data.stations[current].hint1
             //var user = firebase.auth().currentUser;
             //const uid = user.uid
-            const uid = 'GFEDCBA'
+            const uid = '987654321'
             const calc = this.calcQ(25)
             this.getHint(uid,calc)
             alert(hint)
@@ -245,7 +245,7 @@ class Game extends Component {
             const hint = this.state.data.stations[current].hint2
             //var user = firebase.auth().currentUser;
             //var uid = user.uid
-            const uid = 'GFEDCBA'
+            const uid = '987654321'
             const calc = this.calcQ(45)
             this.getHint(uid,calc)
             alert(hint)
@@ -301,7 +301,7 @@ class Game extends Component {
         /// ACA REWARD
         var user = firebase.auth().currentUser;
         //const uid = user.uid
-        const uid = 'GFEDCBA'   
+        const uid = '987654321'   
         const calc = this.calcQ(70)
         this.getReward(uid,calc)
         if (this.state.current+1 < this.state.data.stations.length) {
