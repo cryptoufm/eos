@@ -34,17 +34,17 @@ app.get('/api/getList', function(req,res) {
 });
 
 app.get('/api/getRanking', async function(req,res) {
-
-  async function processData() {
+  const match = req.query.matchCode
+  async function processData(match) {
     var options={
-      uri: `http://3.87.208.133:5000/getScores`,
+      uri: `http://3.87.208.133:5000/getScores?match=${match}`,
       method: 'GET'
     }
     let response = await rp(options);
     //console.log(JSON.parse("[" + response + "]"));
     return response;
   }
-  var done = await processData()
+  var done = await processData(match)
   res.json( done );
 
 });
@@ -53,16 +53,17 @@ app.get('/api/getReward', async function(req,res) {
 
   const amount = req.query.amount
   const uid = req.query.uid
-  async function processData(amount, uid) {
+  const match = req.query.match
+  async function processData(amount, uid, match) {
     var options={
-      uri: `http://3.87.208.133:5000/getReward?uid=${uid}&amount=${amount}`,
+      uri: `http://3.87.208.133:5000/getReward?uid=${uid}&amount=${amount}&match=${match}`,
       method: 'GET'
     }
     let response = await rp(options);
     //console.log(JSON.parse("[" + response + "]"));
     return response;
   }
-  var done = await processData(amount, uid)
+  var done = await processData(amount, uid, match)
   res.json( done );
 
 });
@@ -70,16 +71,17 @@ app.get('/api/getReward', async function(req,res) {
 app.get('/api/getHint', async function(req,res) {
   const amount = req.query.amount
   const uid = req.query.uid
-  async function processData(amount, uid) {
+  const match = req.query.match
+  async function processData(amount, uid, match) {
     var options={
-      uri: `http://3.87.208.133:5000/getHint?uid=${uid}&amount=${amount}`,
+      uri: `http://3.87.208.133:5000/getHint?uid=${uid}&amount=${amount}&match=${match}`,
       method: 'GET'
     }
     let response = await rp(options);
     //console.log(JSON.parse("[" + response + "]"));
     return response;
   }
-  var done = await processData(amount, uid)
+  var done = await processData(amount, uid, match)
   res.json( done );
 
 });
@@ -136,6 +138,49 @@ app.get('/api/createAccount', async function(req,res) {
   res.json( done );
 
 });
+
+
+app.get('/api/joinMatch', async function(req,res) {
+  //cantidad = req.query.cantidad
+  let uid = req.query.uid;
+  let match = req.query.match;
+  let time = req.query.time;
+
+  async function processData(uid,match, time) {
+    var options={
+      uri: `http://3.87.208.133:5000/joinMatch?uid=${uid}&match=${match}&time=${time}`,
+      method: 'GET'
+    }
+    let response = await rp(options);
+    console.log(JSON.parse("[" + response + "]"));
+    return response;
+  }
+  var done = await processData(uid, match, time)
+  res.json( done );
+
+});
+
+app.get('/api/createMatch', async function(req,res) {
+  //cantidad = req.query.cantidad
+  // let uid = req.query.uid;
+  // let match = req.query.match;
+  // let time = req.query.time;
+
+  async function processData() {
+    var options={
+      uri: `http://3.87.208.133:5000/createMatch?password=Queteimporta123&symbol=HHH&maximum=100000.0000`,
+      method: 'GET'
+    }
+    let response = await rp(options);
+    console.log(JSON.parse("[" + response + "]"));
+    return response;
+  }
+  var done = await processData()
+  res.json( done );
+
+});
+
+
 
 
 

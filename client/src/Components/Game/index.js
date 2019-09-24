@@ -24,18 +24,20 @@ class Game extends Component {
                  codigo: '',
                  longitude: 1,
                  latitude: 1,
-                 started: false,
+                 started: localStorage.getItem('started') ? JSON.parse(localStorage.getItem('started')) : false, //local stg
                  gameOver: false,
-                 order: [1, 2, 3, 4, 5, 6],
-                 current: 0,
+                 current: localStorage.getItem('current') ? JSON.parse(localStorage.getItem('current')) : 0,
                  tried: false,
-                 hint1: false,
-                 hint2: false,
+                 hint1: localStorage.getItem('hint1') ?  JSON.parse(localStorage.getItem('hint1')) : false, //local stg
+                 hint2: localStorage.getItem('hint2') ?  JSON.parse(localStorage.getItem('hint2')) : false, //local stg
                  valid: false,
+                 joinCode: '',
+                 typed: false,
+                 join: false,
                  guess: '',
                  transaction: '',
-                 start: moment(),
-                 data: {
+                 start: localStorage.getItem('startHour') ? moment(localStorage.getItem('startHour')).format() : moment(), //local stg
+                 data: localStorage.getItem('dataGame') ? JSON.parse(localStorage.getItem('dataGame')) : {
                     reward: 100,
                     hint1: 20,
                     hint2: 50,
@@ -107,7 +109,7 @@ class Game extends Component {
                         "hint2":"7mo nivel edificio academico",
                         "pregunta":"Lugar mas alto de la universidad",
                         "name":"Estacion crypto"
-                    }]
+                    }] //local stg
                 }
              }
          }
@@ -130,22 +132,32 @@ class Game extends Component {
              }
 
     startGame() {
+
+        //  ACA JOIN GAME
         const data = this.state.data
         const stations = data.stations
+        const startHour = moment()
         for(let i = stations.length - 1; i > 0; i--){
             const j = Math.floor(Math.random() * i)
             const temp = stations[i]
-           stations[i] = stations[j]
+            stations[i] = stations[j]
             stations[j] = temp
         }
-        console.log("suffle", data)
+        // console.log("suffle", data)
         // data.stations = suffle
+        localStorage.setItem('dataGame', JSON.stringify(data));
+        localStorage.setItem('startHour', startHour);
+        localStorage.setItem('started', true);
+        localStorage.setItem('current', 0);
+        //  const datastg = localStorage.getItem('current');
+        //  console.log("localstg", JSON.parse(datastg))
+
         this.setState({
             ...this.state,
             started: true,
+            start: startHour,
             data
         })
-        console.log(this.state)
     }
 
 
@@ -194,14 +206,14 @@ class Game extends Component {
   }
 
   getReward(uid, amount) {
-    fetch(`/api/getReward?uid=${uid}&amount=${amount}.0000`)
+    fetch(`/api/getReward?uid=${uid}&amount=${amount}.0000&match=${this.state.joinCode}`)
     .then(res => res.json())
     .then(transaction => this.setState({ transaction }))
     .catch(err => err)
   }
 
   getHint(uid, amount){
-    fetch(`/api/getHint?uid=${uid}&amount=${amount}.0000`)
+    fetch(`/api/getHint?uid=${uid}&amount=${amount}.0000&match=${this.state.joinCode}`)
     .then(res => res.json())
     .then(transaction => this.setState({ transaction }))
     .catch(err => err)
@@ -211,7 +223,7 @@ class Game extends Component {
   calcQ(q) {
     const when = this.state.start
     const now = moment()
-    const diff = when.diff(now, 'minutes')
+    const diff = now.diff(when, 'minutes')
     console.log("diferencia", diff)
     const calc = Math.floor(((60-diff)/60)*q) ///DUDAAAA
     return calc
@@ -225,11 +237,12 @@ class Game extends Component {
             const hint = this.state.data.stations[current].hint1
             //var user = firebase.auth().currentUser;
             //const uid = user.uid
-            const uid = '987654321'
+            const uid = '1234567890'
             const calc = this.calcQ(25)
             this.getHint(uid,calc)
             alert(`se debito ${calc} Mises de tu cuenta de blockchain`)
             //ACA QUITAR PUNTOS
+            localStorage.setItem('hint1', true);
             this.setState({
                 ...this.state,
                 hint1: true,
@@ -246,10 +259,11 @@ class Game extends Component {
             const hint = this.state.data.stations[current].hint2
             //var user = firebase.auth().currentUser;
             //var uid = user.uid
-            const uid = '987654321'
+            const uid = '1234567890'
             const calc = this.calcQ(45)
             this.getHint(uid,calc)
             alert(`se debito ${calc} Mises de tu cuenta de blockchain`)
+            localStorage.setItem('hint2', true);
             //ACA QUITAR PUNTOS
             this.setState({
                 ...this.state,
@@ -267,6 +281,41 @@ class Game extends Component {
             guess: event.target.value,
             tried: true,
         })
+      }
+
+
+    handleJoinChange(event) {
+    this.setState({
+        ...this.state,
+        joinCode: event.target.value,
+        typed: true,
+    })
+    }
+
+    join(uid, match, time) {
+        fetch(`/api/joinMatch?uid=${uid}&match=${match}&time=${time}`)
+        .then(res => res.json())
+        .then(joinResult => this.setState({ joinResult }))
+        .catch(err => err)
+    }
+
+    joinValidation() {
+        const code = this.state.joinCode
+        //var user = firebase.auth().currentUser;
+        //var uid = user.uid
+        const uid = '1234567890'
+        const hour = moment()
+        this.join(uid, code, hour)
+        if(this.state.joinResult.indexOf('error') === -1) {
+            localStorage.setItem('matchCode', this.state.joinCode);
+            this.setState({
+                ...this.state,
+                join: true
+            })
+        }
+    }
+
+    isValid() {
         const actual = this.state.current
         const station = this.state.data.stations[actual]
         const ymax = this.state.data.stations[actual].maxy
@@ -275,26 +324,12 @@ class Game extends Component {
         const xmin = this.state.data.stations[actual].minx
 
         this.getLocation()
-        if((station.code === event.target.value) /*&& (xmin < this.state.longitude) && (this.state.longitude < xmax) && (ymin < this.state.latitude) && (this.state.latitude < ymax)*/) {
+        if((station.code === this.state.guess) /*&& (xmin < this.state.longitude) && (this.state.longitude < xmax) && (ymin < this.state.latitude) && (this.state.latitude < ymax)*/) {
             this.setState({
                 ...this.state,
                 valid: true
              })
         }
-        console.log(event.target.value)
-      }
-
-    isValid() {
-        ///por el momento no se usa.. se valida en handle changeCodeChange
-        const  actual = this.state.current
-        const station = this.state.data.stations[actual]
-        if(station.code === this.state.guess) {
-            this.setState({
-                ...this.state,
-                valid: true
-             })
-        }
-
     }
 
     //25 45 70    60-loquelleva /60  * cost hint 
@@ -302,7 +337,7 @@ class Game extends Component {
         /// ACA REWARD
         var user = firebase.auth().currentUser;
         //const uid = user.uid
-        const uid = '987654321'
+        const uid = '1234567890'
         const calc = this.calcQ(70)
         this.getReward(uid,calc)
         //alert(`ganaste ${calc} Mises, se remuneraron en tu cuenta de blockchain`)
@@ -310,20 +345,37 @@ class Game extends Component {
             console.log('len', this.state.data.stations.length)
             console.log("station", this.state.current, this.state.data)
             const actual = this.state.current
+            localStorage.setItem('hint1', false);
+            localStorage.setItem('hint2', false);
+            localStorage.setItem('current', actual+1);
             this.setState({
                 ...this.state,
                 current: actual + 1,
                 valid: false,
-                tried: false
+                tried: false,
+                hint1: false,
+                hint2: false,
+                guess: ''
              })
+            alert(`Se han acreditado ${calc} Mises a tu cuenta en blockchain`)
 
         }
         else {
+            localStorage.setItem('hint1', false);
+            localStorage.setItem('hint2', false);
+            localStorage.setItem('started', false);
+            localStorage.removeItem('startHour');
+            localStorage.removeItem('dataGame');
+            localStorage.removeItem('current');
+            localStorage.removeItem('matchCode');
             this.setState({
                 ...this.state,
                 gameOver: true,
                 started: false,
-                valid: false
+                valid: false,
+                hint1: false,
+                hint2: false,
+                guess: ''
 
              })
         }
@@ -338,22 +390,18 @@ class Game extends Component {
         console.log(hint1)
         console.log(hint2)
         return (
-            <div>
-                <div >      
-        
+            <div>    
                 {/*CUENTA */}
-                <div className="header">
+              <div className="header">
                     <LocationOnIcon className="icon" />
                     <div className="stationTitle"> {station.name} </div>
-                    <div> {station.pregunta} </div>
-                </div>
+                    <div className="stationSub"> {station.pregunta} </div>
                 {(this.state.tried && !this.state.valid) ?
                     <div  className="wrong">
                         Codigo incorrecto
                     </div>
                     : null
                 }
-                <div className="header">
                      <TextField
                         error={(this.state.tried && !this.state.valid)}
                         id="outlined-error"
@@ -366,20 +414,22 @@ class Game extends Component {
                         variant="outlined"
                         onChange={(e) => this.handleCodeChange(e)}
                     />
-                </div>
-                <div id="hints">
                     <div  className="text">
-                        necesitas ayuda? <br /> Esta ayuda tiene un costo
+                        <b > necesitas ayuda? </b> <br /> Esta ayuda tiene un costo <br />
+                    </div >
+                    <div className="textMini">
+                        La primera pista cuesta 25 Mises <br /> y la segunda 45 Mises.
                     </div>
                     {!this.state.hint1 ? <Button variant="outlined" color="primary" onClick={() => this.showHint1()}> Pista </Button> : null}
                     {this.state.hint1 ? <div className="text"> <b>Hint1: </b> {hint1}</div> : null}
-                    {(this.state.hint1 && !this.state.hint2) ? <Button variant="outlined" color="primary" onClick={() => this.showHint2()}> Pista (mejor que la anterior)</Button> : null}
-                    {this.state.valid ? <Button variant="outlined" color="primary" onClick={() => this.nextStation()}> Next challenge </Button> : null}
                     {this.state.hint2 ? <div  className="text">  <b>Hint2: </b> {hint2}</div> : null}
-                </div>
-              </div>
-            </div>
-            );
+                    {(this.state.hint1 && !this.state.hint2) ? <Button variant="outlined" color="primary" onClick={() => this.showHint2()}> Pista (mejor que la anterior)</Button> : null}
+                    {this.state.valid ? <Button variant="outlined" color="primary" onClick={() => this.nextStation()}> Siguiente reto </Button> 
+                    : <Button variant="outlined" color="primary" onClick={() => this.isValid()}> validar </Button>
+                    }
+            </div>
+         </div>
+       );
 
     }
 
@@ -390,13 +440,25 @@ class Game extends Component {
                {!this.state.gameOver ?
                     !this.state.started ?
                     <div className="header">
-                        <Button variant="outlined" color="primary" onClick={() => this.startGame()}> Start Game </Button>
+                      <TextField
+                        error={this.state.join}
+                        id="outlined-error"
+                        id="outlined-email-input"
+                        label={(!this.state.join && this.state.typed) ? "Codigo incorrecto" : "Ingresa el codigo"}
+                        type="code"
+                        name="code"
+                        autoComplete="Ingresa el codigo"
+                        margin="normal"
+                        variant="outlined"
+                        onChange={(e) => this.handleJoinChange(e)}
+                    />
+                        {this.state.join ? <Button variant="outlined" color="primary" onClick={() => this.startGame()}> Iniciar Juego </Button> : <Button variant="outlined" color="primary" onClick={() => this.joinValidation()}> Unirse a la partida </Button>}
                     </div>
                     : this.renderStation() :
                 <div className="header">
                     <div> Game over </div>
                     <Link to={'./ranking'}>
-                        <Button variant="outlined" color="primary" onClick={() => this.startGame()}> ver resultados </Button>
+                        <Button variant="outlined" color="primary" > ver resultados </Button>
                     </Link>
                 </div>
                }

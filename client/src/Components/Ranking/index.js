@@ -20,7 +20,8 @@ class Ranking extends Component {
   constructor(props){
     super(props);
     this.state = {
-      rows: []
+      rows: [],
+      match: localStorage.getItem('matchCode')
     }
   }
 
@@ -29,7 +30,7 @@ class Ranking extends Component {
   }
 
   getRows = () => {
-    fetch('/api/getRanking')
+    fetch(`/api/getRanking?matchCode=${this.state.match}`)
     .then(res => res.json())
     .then(rows => this.setState({ rows }))
     .catch(err => err)

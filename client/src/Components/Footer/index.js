@@ -9,6 +9,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import RestoreIcon from '@material-ui/icons/Restore';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import Add from '@material-ui/icons/Add';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import PersonIcon from '@material-ui/icons/Person';
@@ -37,8 +38,8 @@ class Footer extends Component {
               <Link to={'./ranking'}>
                 <BottomNavigationAction label="Ranking" icon={<BarChartIcon />} />
               </Link>
-              <Link to={'./ranking'}>
-                <BottomNavigationAction label="Map" icon={<LocationOnIcon />} />
+              <Link to={'./list'}>
+                <BottomNavigationAction label="Map" icon={<Add />} />
               </Link>
             </BottomNavigation>
           </div>
