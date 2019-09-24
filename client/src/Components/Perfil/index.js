@@ -32,12 +32,14 @@ class Profile extends Component {
       this.setState({ isSignedIn: !!user })
         console.log("user", user)
 
+      /*
       nombres = firebase.auth().currentUser.displayName;
       fetch(`/api/getProfile?uid=${firebase.auth.currentUser.uid}`)
       .then(res => res.json())
       .then(info => this.setState({ info }))
       .catch(err => err)
-
+      */
+     
       //let rowsjson = JSON.parse("[" + this.state.info + "]");
       //const json = rowsjson[0]
 
