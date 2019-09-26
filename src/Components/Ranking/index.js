@@ -26,7 +26,6 @@ class Ranking extends Component {
 
   componentDidMount() {
     const match = localStorage.getItem('matchCode')
-    console.log(`http://3.87.208.133:5000/getScores?match=${match}`)
     if (match ) {
       this.getRows(match)
     }
@@ -34,20 +33,23 @@ class Ranking extends Component {
   }
 
 
-  getRows(match) {
-    console.log("fetch", `http://3.87.208.133:5000/getScores?match=${match}`)
-    fetch(`http://3.87.208.133:5000/getScores?matchCode=${match}`)
-    .then(res => JSON.parse("[" + res + "]"))
-    .then(rows => this.setState({ rows }))
-    .catch(err => err)
+  async getRows(match) {
+    try {
+      const resp = await fetch(`http://3.87.208.133:5000/getScores?match=${match}`)
+      var data = await resp.json();
+      console.log("respuesta join", data)
+      if( data /*&& data.indexOf('error') === -1*/) {
+          console.log("join ", data)
+          this.setState({ rows: data })
+     }
 
-    console.log("rows", this.state.rows)
+  } catch(err) {
+      console.log(err)
+  }
   }
 
   renderTable(staterows) {
-    let rowsjson = JSON.parse("[" + staterows + "]");
-    const json = rowsjson[0]
-    console.log("hey", json)
+    const json = staterows
     return  (
       <Table id='tabla'>
         <TableHead>
@@ -95,7 +97,7 @@ class Ranking extends Component {
           Ranking
         </div>
         <div id="tableContainer">
-          {(this.state.rows.length > 0 && this.state.rows.indexOf("error") === -1) ? this.renderTable(this.state.rows) : <div> No se encontraron jugadores </div>}
+          {(this.state.rows.length > 0) ? this.renderTable(this.state.rows) : <div className="noplayers"> No se encontraron jugadores </div>}
         </div>
       <Footer />
     </div>

@@ -2,9 +2,16 @@
   width: 100%;
   height: 100%;
   font-size: 40px;
-  color: #FFF !important;
+  color: #000 !important;
 
 
+}
+
+
+.noplayers {
+  font-size: 15px;
+  color: #000;
+  text-align: center;
 }
 
 #title {
@@ -18,7 +25,7 @@
 }
 
 .MuiTableCell-body {
-  color: #fff !important; 
+  color: #000 !important; 
   font-weight: 400;
 }
 
