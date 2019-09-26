@@ -35,9 +35,9 @@ class Profile extends Component {
         this.setState({
             currentUser: user.uid
         })
+        this.getRows(user.uid);
     }
 
-    this.getRows();
     //END REDIRECT
   }
 
@@ -52,14 +52,23 @@ class Profile extends Component {
     this.getRows();
   }*/
 
-  getRows() {
+  async getRows(uid) {
+    try {
+      const resp = await fetch(`http://3.87.208.133:5000/getProfile?uid=${uid}`)
+      console.log(`http://3.87.208.133:5000/getProfile?uid=${uid}`)
+      var data = await resp.json();
+      console.log("respuesta join", data)
+      if( data ) {
+          console.log("join ", data)
+          this.setState({
+              ...this.state,
+              res: data
+          })
+     }
 
-    var ui = this.state.currentUser
-    fetch(`http://3.87.208.133:5000/getProfile?uid=${ui}`)
-    .then(res => res.json())
-    .then(res => this.setState({ res }))
-    .then(res => console.log('funcion', res)) 
-    .catch(err => err);
+  } catch(err) {
+      console.log(err)
+  }
 
   }
 
