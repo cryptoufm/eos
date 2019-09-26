@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import { Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom'
 import PersonIcon from '@material-ui/icons/Person';
 import LocalAtmIcon from '@material-ui/icons/LocalAtm';
 import Button from '@material-ui/core/Button';
@@ -115,12 +116,13 @@ class Game extends Component {
              }
          }
 
-    componentWillMount() {
+    componentDidMount() {
         var user = firebase.auth().currentUser;
-        this.setState({
-            currentUser: user
-        })
-        console.log("current user", this.state.currentUser)
+        if (user) {
+            this.setState({
+                currentUser: user.uid
+            })
+        }
     }
 
 
@@ -211,14 +213,14 @@ class Game extends Component {
   }
 
   getReward(uid, amount) {
-    fetch(`/api/getReward?uid=${uid}&amount=${amount}.0000&match=${this.state.joinCode}`)
+    fetch(`http://3.87.208.133:5000/getReward?uid=${uid}&amount=${amount}.0000&match=${this.state.joinCode}`)
     .then(res => res.json())
     .then(transaction => this.setState({ transaction }))
     .catch(err => err)
   }
 
   getHint(uid, amount){
-    fetch(`/api/getHint?uid=${uid}&amount=${amount}.0000&match=${this.state.joinCode}`)
+    fetch(`http://3.87.208.133:5000/getHint?uid=${uid}&amount=${amount}.0000&match=${this.state.joinCode}`)
     .then(res => res.json())
     .then(transaction => this.setState({ transaction }))
     .catch(err => err)
@@ -240,8 +242,6 @@ class Game extends Component {
         if (this.state.hint1 === false) {
             const current = this.state.current
             const hint = this.state.data.stations[current].hint1
-            //var user = firebase.auth().currentUser;
-            //const uid = user.uid
             const uid = '1234567890'
             const calc = this.calcQ(25)
             this.getHint(uid,calc)
@@ -265,6 +265,7 @@ class Game extends Component {
             //var user = firebase.auth().currentUser;
             //var uid = user.uid
             const uid = '1234567890'
+            // const uid = this.state.currentUser
             const calc = this.calcQ(45)
             this.getHint(uid,calc)
             alert(`se debito ${calc} Mises de tu cuenta de blockchain`)
@@ -306,23 +307,32 @@ class Game extends Component {
         console.log("join result", this.state.joinResult)
     }
 
-     joinValidation() {
+
+     async joinValidation() {
 
         const code = this.state.joinCode
-        //var user = firebase.auth().currentUser;
+        //var user = await firebase.auth().currentUser;
         //var uid = user.uid
         const uid = '1234567890'
-        const hour = moment()
-         this.join(uid, code, hour)
-        if( this.state.joinResult) {
-            console.log("join ", this.state.joinResult)
-            if(this.state.joinResult.indexOf('error') === -1) {
+        // const uid = this.state.currentUser
+        //var user = firebase.auth().currentUser;
+        //const uid = user.uid
+        const hour = moment().format("HH:mm:ss")
+        console.log("UIDDDDDDD", uid)
+        try {
+            const resp = await fetch(`http://3.87.208.133:5000/joinMatch?uid=${uid}&match=${code}&time=${hour}`)
+            var data = await resp.json();
+            if( data && data.action.indexOf('error') === -1) {
+                console.log("join ", data)
                 localStorage.setItem('matchCode', this.state.joinCode);
                 this.setState({
                     ...this.state,
                     join: true
                 })
-            }
+           }
+
+        } catch(err) {
+            console.log(err)
         }
 
     }
@@ -347,9 +357,10 @@ class Game extends Component {
     //25 45 70    60-loquelleva /60  * cost hint 
     nextStation() {
         /// ACA REWARD
-        var user = firebase.auth().currentUser;
+        // var user = firebase.auth().currentUser;
         //const uid = user.uid
         const uid = '1234567890'
+        // const uid = this.state.currentUser
         const calc = this.calcQ(70)
         this.getReward(uid,calc)
         //alert(`ganaste ${calc} Mises, se remuneraron en tu cuenta de blockchain`)
@@ -393,14 +404,17 @@ class Game extends Component {
         }
     }
 
+    renderRedirect = () => {
+        console.log("redirect")
+        return <Redirect to='/' />
+    }
+
     renderStation() {
         console.log("hour", this.state.start)
         const currentp = this.state.current
         const station = this.state.data.stations[currentp]
         const hint1 = this.state.data.stations[currentp].hint1
         const hint2 = this.state.data.stations[currentp].hint2
-        console.log(hint1)
-        console.log(hint2)
         return (
             <div>    
                 {/*CUENTA */}
@@ -436,7 +450,7 @@ class Game extends Component {
                     {this.state.hint1 ? <div className="text"> <b>Hint1: </b> {hint1}</div> : null}
                     {this.state.hint2 ? <div  className="text">  <b>Hint2: </b> {hint2}</div> : null}
                     {(this.state.hint1 && !this.state.hint2) ? <Button variant="outlined" color="primary" onClick={() => this.showHint2()}> Pista (mejor que la anterior)</Button> : null}
-                    {this.state.valid ? <Button variant="outlined" color="primary" onClick={() => this.nextStation()}> Siguiente reto </Button> 
+                    {this.state.valid ? <Button variant="contained" color="secondary" onClick={() => this.nextStation()}> Siguiente reto </Button> 
                     : <Button variant="outlined" color="primary" onClick={() => this.isValid()}> validar </Button>
                     }
             </div>
@@ -447,6 +461,13 @@ class Game extends Component {
 
 
     render() {
+        var user = firebase.auth().currentUser;
+        if(!user) {
+            return(
+                this.renderRedirect()
+            )
+        }
+        console.log("USEEERRR", this.state.currentUser)
         return (
             <div id="wrapper">
                {!this.state.gameOver ?
@@ -464,7 +485,7 @@ class Game extends Component {
                         variant="outlined"
                         onChange={(e) => this.handleJoinChange(e)}
                     />
-                        {this.state.join ? <Button variant="outlined" color="primary" onClick={() => this.startGame()}> Iniciar Juego </Button> : <Button variant="outlined" color="primary" onClick={() => this.joinValidation()}> Unirse a la partida </Button>}
+                        {this.state.join ? <Button variant="contained" color="secondary" onClick={() => this.startGame()}> Iniciar Juego </Button> : <Button variant="outlined" color="primary" onClick={() => this.joinValidation()}> Unirse a la partida </Button>}
                     </div>
                     : this.renderStation() :
                 <div className="header">

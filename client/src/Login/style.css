@@ -19,3 +19,17 @@
     border-radius: 50%;
     bottom: 53%;
 }
+
+.buttons {
+    background-color: white;
+    margin: 5px;
+}
+
+.buttonsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+}

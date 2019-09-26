@@ -26,20 +26,18 @@ class Footer extends Component {
       <div className={styles}>
         <Paper>
           <div className={`bottom-navigation`}>
-          <BottomNavigation
-              showLabels
-              >
+          <BottomNavigation>
               <Link to={'./profile'}>
-                <BottomNavigationAction label="Account" icon={<PersonIcon />} />
+                <BottomNavigationAction  icon={<PersonIcon />} />
               </Link>
               <Link to={'./game'}>
-                <BottomNavigationAction label="Game" icon={<FavoriteIcon />} />
+                <BottomNavigationAction icon={<FavoriteIcon />} />
               </Link>
               <Link to={'./ranking'}>
-                <BottomNavigationAction label="Ranking" icon={<BarChartIcon />} />
+                <BottomNavigationAction  icon={<BarChartIcon />} />
               </Link>
               <Link to={'./list'}>
-                <BottomNavigationAction label="Map" icon={<Add />} />
+                <BottomNavigationAction  icon={<Add />} />
               </Link>
             </BottomNavigation>
           </div>

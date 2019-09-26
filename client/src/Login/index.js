@@ -4,6 +4,8 @@ import './style.css';
 import Grid from '@material-ui/core/Grid';
 import Tesoro from './treasure.png'
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
+import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
 
 firebase.initializeApp({
   apiKey: "AIzaSyAU7bPRjmCjv_GOJ-UFVyTKpoC7ApulO2Q",
@@ -52,7 +54,7 @@ class Login extends Component {
     name2 = name2.padEnd(5, '0')
     if(name2.length > 6) name2 = name2.substring(0,6);
 
-      fetch(`/api/createAccount?uid=${uid}&username=${name2}`)
+      fetch(`http://3.87.208.133:5000/createAccount?uid=${uid}&username=${name2}&amount=100.0000`)
       .then(res => res.json())
       .then(respuesta => this.setState({ respuesta }))
       .catch(err => err)
@@ -81,9 +83,14 @@ class Login extends Component {
                 src={firebase.auth().currentUser.photoURL}
               />
             </div>
-            <button onClick={() => firebase.auth().signOut()}>Sign out!</button>
-            <button onClick={() => this.createAccount()}>Join Human Action!</button>
-        
+            <div className="buttonsContainer">
+              <Link to={'./profile'}>
+                <Button variant="contained" color="secondary" onClick={() => this.createAccount()}>Join Human Action!</Button>
+              </Link>
+              <Link to={'./'}>
+                <Button variant="contained" onClick={() => firebase.auth().signOut()}>Sign out!</Button>
+              </Link>
+            </div>
           </div>
         ) : (
           <StyledFirebaseAuth
