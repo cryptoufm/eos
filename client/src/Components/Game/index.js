@@ -117,12 +117,14 @@ class Game extends Component {
          }
 
     componentDidMount() {
+        //PARA REDIRECT EN SU COMPONENTE PONGAN ESTOOOOOO
         var user = firebase.auth().currentUser;
         if (user) {
             this.setState({
                 currentUser: user.uid
             })
         }
+        //END REDIRECT
     }
 
 
@@ -404,10 +406,12 @@ class Game extends Component {
         }
     }
 
+     //PARA REDIRECT EN SU COMPONENTE PONGAN ESTOOOOOO
     renderRedirect = () => {
         console.log("redirect")
         return <Redirect to='/' />
     }
+    //END REDIRECT
 
     renderStation() {
         console.log("hour", this.state.start)
@@ -461,12 +465,14 @@ class Game extends Component {
 
 
     render() {
+         //PARA REDIRECT EN SU COMPONENTE PONGAN ESTOOOOOO
         var user = firebase.auth().currentUser;
         if(!user) {
             return(
                 this.renderRedirect()
             )
         }
+        //END REDIRECT
         console.log("USEEERRR", this.state.currentUser)
         return (
             <div id="wrapper">
