@@ -21,16 +21,19 @@ class Ranking extends Component {
     super(props);
     this.state = {
       rows: [],
-      match: localStorage.getItem('matchCode')
+      match: ''
     }
   }
 
   componentWillMount() {
+    this.setState({
+      match: localStorage.getItem('matchCode')
+    })
     this.getRows();
   }
 
   getRows = () => {
-    fetch(`/api/getRanking?matchCode=${this.state.match}`)
+    fetch(`http://3.87.208.133:5000/getScores??matchCode=${this.state.match}`)
     .then(res => res.json())
     .then(rows => this.setState({ rows }))
     .catch(err => err)

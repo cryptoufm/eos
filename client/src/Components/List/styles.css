@@ -1,0 +1,25 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-image: url("bottom.png");
+    background-size: cover;
+}
+
+.headerCreate {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    color: #000;
+    margin: 0;
+    height: 300px;
+    color: #000;
+    font-size: 15px;
+}
+
+.header svg {
+    width: 50px;
+}

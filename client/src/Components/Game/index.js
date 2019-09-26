@@ -35,7 +35,7 @@ class Game extends Component {
                  valid: false,
                  joinCode: '',
                  typed: false,
-                 join: false,
+                 join: true, //CAMBIAR
                  guess: '',
                  transaction: '',
                  start: localStorage.getItem('startHour') ? moment(localStorage.getItem('startHour')).format() : moment(), //local stg
@@ -235,6 +235,10 @@ class Game extends Component {
     const diff = now.diff(when, 'minutes')
     console.log("diferencia", diff)
     const calc = Math.floor(((60-diff)/60)*q) ///DUDAAAA
+    if (calc < 0) {
+        calc = 0
+        return calc
+    }
     return calc
 }
 
@@ -348,7 +352,7 @@ class Game extends Component {
         const xmin = this.state.data.stations[actual].minx
 
         this.getLocation()
-        if((station.code === this.state.guess) /*&& (xmin < this.state.longitude) && (this.state.longitude < xmax) && (ymin < this.state.latitude) && (this.state.latitude < ymax)*/) {
+        if((station.code === this.state.guess) && (xmin < this.state.longitude) && (this.state.longitude < xmax) && (ymin < this.state.latitude) && (this.state.latitude < ymax)) {
             this.setState({
                 ...this.state,
                 valid: true
@@ -483,7 +487,7 @@ class Game extends Component {
                         error={this.state.join}
                         id="outlined-error"
                         id="outlined-email-input"
-                        label={(!this.state.join && this.state.typed) ? "Codigo incorrecto" : "Ingresa el codigo"}
+                        label={ this.state.join ? "Codigo correcto" : "Ingresa el codigo" }
                         type="code"
                         name="code"
                         autoComplete="Ingresa el codigo"
