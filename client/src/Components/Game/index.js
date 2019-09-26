@@ -35,7 +35,7 @@ class Game extends Component {
                  valid: false,
                  joinCode: '',
                  typed: false,
-                 join: true, //CAMBIAR
+                 join: false, //CAMBIAR
                  guess: '',
                  transaction: '',
                  start: localStorage.getItem('startHour') ? moment(localStorage.getItem('startHour')).format() : moment(), //local stg
@@ -424,20 +424,12 @@ class Game extends Component {
         const hint1 = this.state.data.stations[currentp].hint1
         const hint2 = this.state.data.stations[currentp].hint2
         return (
-            <div>    
-                {/*CUENTA */}
-              <div className="header">
-                    <LocationOnIcon className="icon" />
+            <div class="wrapperGame" id="mainGameee">    
+              <div className="headerGame">
+                    <LocationOnIcon />
                     <div className="stationTitle"> {station.name} </div>
                     <div className="stationSub"> {station.pregunta} </div>
-                {/*(this.state.tried && !this.state.valid) ?
-                    <div  className="wrong">
-                        Codigo incorrecto
-                    </div>
-                    : null*/
-                }
                      <TextField
-                        //error={(this.state.tried && !this.state.valid)}
                         id="outlined-error"
                         id="outlined-email-input"
                         label="Ingresa el codigo"
@@ -459,7 +451,7 @@ class Game extends Component {
                     {this.state.hint2 ? <div  className="text">  <b>Hint2: </b> {hint2}</div> : null}
                     {(this.state.hint1 && !this.state.hint2) ? <Button variant="outlined" color="primary" onClick={() => this.showHint2()}> Pista (mejor que la anterior)</Button> : null}
                     {this.state.valid ? <Button variant="contained" color="secondary" onClick={() => this.nextStation()}> Siguiente reto </Button> 
-                    : <Button variant="outlined" color="primary" onClick={() => this.isValid()}> validar </Button>
+                    : <div className="validButton"> <Button variant="outlined" color="primary" onClick={() => this.isValid()}> validar </Button> </div>
                     }
             </div>
          </div>
@@ -479,10 +471,10 @@ class Game extends Component {
         //END REDIRECT
         console.log("USEEERRR", this.state.currentUser)
         return (
-            <div id="wrapper">
+            <div id="wrapperMain">
                {!this.state.gameOver ?
                     !this.state.started ?
-                    <div className="header">
+                    <div className="headerGame">
                       <TextField
                         error={this.state.join}
                         id="outlined-error"
