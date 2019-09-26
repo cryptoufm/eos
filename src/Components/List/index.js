@@ -13,7 +13,7 @@ class List extends Component {
     this.state = {
       list: [],
       newMatch: false,
-      code: '',
+      code: localStorage.getItem('matchCode') || '',
 
     }
   }
@@ -54,10 +54,11 @@ class List extends Component {
     try {
         const resp = await fetch('http://3.87.208.133:5000/createMatch?password=Queteimporta123&maximum=100000.0000')
         var data = await resp.json();
-        if( data && data.action.indexOf('error') === -1) {
+        if( data.match ) {
+            localStorage.setItem('matchCode', data.match);
             console.log("join ", data)
             this.setState({
-              code: data.action,
+              code: data.match,
               newMatch: true
             })
        }
@@ -79,7 +80,8 @@ renderRedirect = () => {
       return (
         <div className="wrapper">
           <div className="headerCreate">
-            Finaliza la partida en curso.
+            Finaliza la partida en curso. <br />
+            Codigo actual: {this.state.code}
           </div>
           <Footer />
         </div>
@@ -92,7 +94,7 @@ renderRedirect = () => {
           {
             !this.state.newMatch ?
               null
-            : <div> {this.state.code} </div>
+            : <div> Partida actual: {this.state.code} </div>
           }
           <Button variant="outlined" color="primary" onClick={() => this.createButton()}> Create Match </Button>
           </div>

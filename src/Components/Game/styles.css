@@ -4,6 +4,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    background-image: url("art.jpeg");
+    background-size: cover;
 }
 
 

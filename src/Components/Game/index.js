@@ -248,7 +248,7 @@ class Game extends Component {
         if (this.state.hint1 === false) {
             const current = this.state.current
             const hint = this.state.data.stations[current].hint1
-            const uid = '1234567890'
+            const uid = this.state.currentUser //'1234567890'
             const calc = this.calcQ(25)
             const match = this.state.joinCode
             this.getHint(uid,calc, match)
@@ -271,7 +271,7 @@ class Game extends Component {
             const hint = this.state.data.stations[current].hint2
             //var user = firebase.auth().currentUser;
             //var uid = user.uid
-            const uid = '1234567890'
+            const uid = this.state.currentUser //'1234567890'
             // const uid = this.state.currentUser
             const calc = this.calcQ(45)
             const match = this.state.joinCode
@@ -320,7 +320,7 @@ class Game extends Component {
         const code = this.state.joinCode
         //var user = await firebase.auth().currentUser;
         //var uid = user.uid
-        const uid = '1234567890'
+        const uid = this.state.currentUser //'1234567890'
         // const uid = this.state.currentUser
         //var user = firebase.auth().currentUser;
         //const uid = user.uid
@@ -329,6 +329,7 @@ class Game extends Component {
         try {
             const resp = await fetch(`http://3.87.208.133:5000/joinMatch?uid=${uid}&match=${code}&time=${hour}`)
             var data = await resp.json();
+            console.log("respuesta join", data)
             if( data && data.action.indexOf('error') === -1) {
                 console.log("join ", data)
                 localStorage.setItem('matchCode', this.state.joinCode);
@@ -371,7 +372,7 @@ class Game extends Component {
         /// ACA REWARD
         // var user = firebase.auth().currentUser;
         //const uid = user.uid
-        const uid = '1234567890'
+        const uid = this.state.currentUser //'1234567890'
         // const uid = this.state.currentUser
         const calc = this.calcQ(70)
         const match = this.state.joinCode
@@ -436,7 +437,7 @@ class Game extends Component {
                     <LocationOnIcon />
                     <div className="stationTitle"> {station.name} </div>
                     <div className="stationSub"> {station.pregunta} </div>
-                    {(!this.state.valid && this.state.tried) ? <div className="wrong">Codigo incorrecto</div> : null}
+                    {(!this.state.valid && this.state.tried) ? <div className="wrong">Codigo incorrecto o lugar incorrecto</div> : null}
                      <TextField
                         id="outlined-error"
                         id="outlined-email-input"
@@ -454,12 +455,12 @@ class Game extends Component {
                     <div className="textMini">
                         La primera pista cuesta 25 Mises <br /> y la segunda 45 Mises.
                     </div>
-                    {!this.state.hint1 ? <Button variant="outlined" color="primary" onClick={() => this.showHint1()}> Pista </Button> : null}
+                    {!this.state.hint1 ? <Button variant="contained" color="primary" onClick={() => this.showHint1()}> Pista </Button> : null}
                     {this.state.hint1 ? <div className="text"> <b>Hint1: </b> {hint1}</div> : null}
                     {this.state.hint2 ? <div  className="text">  <b>Hint2: </b> {hint2}</div> : null}
-                    {(this.state.hint1 && !this.state.hint2) ? <Button variant="outlined" color="primary" onClick={() => this.showHint2()}> Pista (mejor que la anterior)</Button> : null}
+                    {(this.state.hint1 && !this.state.hint2) ? <Button variant="contained" color="primary" onClick={() => this.showHint2()}> Pista (mejor que la anterior)</Button> : null}
                     {this.state.valid ? <Button variant="contained" color="secondary" onClick={() => this.nextStation()}> Siguiente reto </Button> 
-                    : <div className="validButton"> <Button variant="outlined" color="primary" onClick={() => this.isValid()}> validar </Button> </div>
+                    : <div className="validButton"> <Button variant="contained" color="primary" onClick={() => this.isValid()}> validar </Button> </div>
                     }
             </div>
          </div>
@@ -495,7 +496,7 @@ class Game extends Component {
                         variant="outlined"
                         onChange={(e) => this.handleJoinChange(e)}
                     />
-                        {this.state.join ? <Button variant="contained" color="secondary" onClick={() => this.startGame()}> Iniciar Juego </Button> : <Button variant="outlined" color="primary" onClick={() => this.joinValidation()}> Unirse a la partida </Button>}
+                        {this.state.join ? <Button variant="contained" color="secondary" onClick={() => this.startGame()}> Iniciar Juego </Button> : <Button variant="contained" color="primary" onClick={() => this.joinValidation()}> Unirse a la partida </Button>}
                     </div>
                     : this.renderStation() :
                 <div className="header">

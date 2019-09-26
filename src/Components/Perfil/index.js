@@ -10,48 +10,81 @@ import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import Footer from '../Footer';
 import firebase from "firebase"
 import EmailIcon from '@material-ui/icons/Email';
-import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
+import { Redirect } from 'react-router-dom'
 
-
-// import { Api, JsonRpc, RpcError } from 'eosjs';
-// import { Api, JsonRpc, RpcError } from 'eosjs';
-// import { JsSignatureProvider } from 'eosjs/dist/eosjs-jssig';
-var nombres;
 
 class Profile extends Component {
 
   constructor(props){
     super(props);
     this.state = {
-      balance: "200000"
+      res: []
     }
+    
   }
 
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user })
         console.log("user", user)
-
-      /*
-      nombres = firebase.auth().currentUser.displayName;
-      fetch(`/api/getProfile?uid=${firebase.auth.currentUser.uid}`)
-      .then(res => res.json())
-      .then(info => this.setState({ info }))
-      .catch(err => err)
-      */
-     
-      //let rowsjson = JSON.parse("[" + this.state.info + "]");
-      //const json = rowsjson[0]
-
     })
 
-    // function llamar_carlos():
-    //    cujcuj = cujcujx3
-    //    return(carlos aparece)
+    //PARA REDIRECT EN SU COMPONENTE PONGAN ESTOOOOOO
+    var user = firebase.auth().currentUser;
+    if (user) {
+        this.setState({
+            currentUser: user.uid
+        })
+    }
+
+    this.getRows();
+    //END REDIRECT
   }
+
+  renderRedirect = () => {
+    console.log("redirect")
+    return <Redirect to='/' />
+}
+
+
+
+  /*componentWillMount() {
+    this.getRows();
+  }*/
+
+  getRows() {
+
+    var ui = this.state.currentUser
+    fetch(`http://3.87.208.133:5000/getProfile?uid=${ui}`)
+    .then(res => res.json())
+    .then(res => this.setState({ res }))
+    .then(res => console.log('funcion', res)) 
+    .catch(err => err);
+
+  }
+
+
+  renderBalance() {
+    console.log("res balance", this.state.res)
+    return (
+      <Typography gutterBottom variant="h6">
+        {`Resp: ${this.state.res}`}
+      </Typography>
+    )
+  }
+
 
   render() {
 
+    //PARA REDIRECT EN SU COMPONENTE PONGAN ESTOOOOOO
+    var user = firebase.auth().currentUser;
+    if(!user) {
+        return(
+            this.renderRedirect()
+        )
+    }
+    //END REDIRECT
+    
 
     var user = firebase.auth().currentUser;
     var name, email, photoUrl, uid, emailVerified, name2;
@@ -64,24 +97,11 @@ class Profile extends Component {
       name2 = name.replace(/ +/g, "");
     }
 
-
-    /*
-    fetch(`/api/getBalance?uid=${uid}`)
-      .then(res => res.json())
-      .then(balance => this.setState({ balance }))
-      .catch(err => err)
-    */
-    //const urls = `http://54.163.3.27:5000/createAccount?uid=${uid}&account=${name2}`
-
-
-    const { list } = this.state;
-    console.log("lista", list) 
-
-     
-
     return (
 
     <div className="page">
+     
+
         <Footer />
         <div className="header">
             
@@ -93,7 +113,7 @@ class Profile extends Component {
         <Grid container alignItems="center">
           <Grid item xs>
             <Typography gutterBottom variant="h6">
-              
+            
             </Typography>
             <Typography gutterBottom variant="h4" >
               {name} 
@@ -113,7 +133,7 @@ class Profile extends Component {
             <Grid item>
                 <Typography gutterBottom variant="h7">
                     {/*NakaToshi2323*/}
-                    {email}
+                    {(this.state.res) ? this.state.res.account : null}
                 </Typography>
             </Grid>
         </Grid>
@@ -124,13 +144,14 @@ class Profile extends Component {
             <LocalAtmIcon color="secondary" />
             </Grid>
             <Grid item>
-                <Typography gutterBottom variant="h6">
-                20000
-                </Typography>
+                
+                {/*this.state.res ? this.renderBalance() : null*/}
+                {`${(this.state.res) ? this.state.res.balance : null} Mises`}
+                
             </Grid>
         </Grid>
 
-        <Button variant="outlined" color="primary" onClick={() => alert("5Js36uNKqHvanD6MU2XScMHchs5k733azdRRKzGJcQT3roTmdCd")} > Private Key</Button>
+        <Button variant="outlined" color="primary" onClick={() => alert(`Private Key: \n ${(this.state.res) ? this.state.res.privatekey : null}`)} > Private Key</Button>
         <p> </p>
         <Button variant="outlined" color="primary" onClick={() => firebase.auth().signOut()}>Sign out</Button>
       </div>

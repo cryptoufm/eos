@@ -41,23 +41,39 @@ class Login extends Component {
 
 
     })
-
-    
   }
 
 
-  createAccount() {
+  async createAccount() {
     var user = firebase.auth().currentUser;
     const uid = user.uid;
     const name1 = user.displayName; 
     var name2 = name1.replace(/ +/g, "");
-    name2 = name2.padEnd(5, '0')
-    if(name2.length > 6) name2 = name2.substring(0,6);
+    var letters = /^[A-Za-z]/;
+    //var matches =name2.match(/[a-zA-Z]+/g);
+    var matches = name2.replace(/[^a-zA-Z0-5]+/g, '');
+    matches = matches.toLowerCase()
+    console.log("name2", matches)
+    //name2 = matches.padEnd(5, '0')
+    if(matches.length > 6) {matches = matches.substring(0,6)};
 
-      fetch(`http://3.87.208.133:5000/createAccount?uid=${uid}&username=${name2}&amount=100.0000`)
-      .then(res => res.json())
-      .then(respuesta => this.setState({ respuesta }))
-      .catch(err => err)
+      try {
+        const resp = await fetch(`http://3.87.208.133:5000/createAccount?uid=${uid}&username=${matches}&amount=100.0000`)
+        console.log(`http://3.87.208.133:5000/createAccount?uid=${uid}&username=${matches}&amount=100.0000`)
+        console.log("resp", resp)
+        var data = await resp.json();
+        console.log("respuesta join", data)
+        if( data && data.action.indexOf('error') === -1) {
+            console.log("join ", data)
+            localStorage.setItem('matchCode', this.state.joinCode);
+            this.setState({ respuesta: data })
+       }
+
+    } catch(err) {
+        console.log(err)
+    }
+
+
   }
 
   render() {
