@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import firebase from "firebase"
 import './style.css';
-import Grid from '@material-ui/core/Grid';
 import Tesoro from './treasure.png'
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth"
 import { Link } from 'react-router-dom';
@@ -37,10 +36,20 @@ class Login extends Component {
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged(user => {
       this.setState({ isSignedIn: !!user })
-      console.log("user", user)
-
-
+      localStorage.clear();
+      console.log("user:", user)
     })
+  }
+
+  async signout_and_clearLocal() {
+      try {
+        firebase.auth().signOut()
+        console.log('USER LOGGED OUT')
+        localStorage.clear();
+
+    } catch(err) {
+        console.log(err)
+    }
   }
 
 
@@ -49,13 +58,11 @@ class Login extends Component {
     const uid = user.uid;
     const name1 = user.displayName; 
     var name2 = name1.replace(/ +/g, "");
-    var letters = /^[A-Za-z]/;
-    //var matches =name2.match(/[a-zA-Z]+/g);
     var matches = name2.replace(/[^a-zA-Z0-5]+/g, '');
     matches = matches.toLowerCase()
     console.log("name2", matches)
-    //name2 = matches.padEnd(5, '0')
-    if(matches.length > 6) {matches = matches.substring(0,6)};
+    var matches2 = matches.padEnd(5, '0')
+    if(matches2.length > 6) {matches = matches2.substring(0,6)};
 
       try {
         const resp = await fetch(`http://3.87.208.133:5000/createAccount?uid=${uid}&username=${matches}&amount=100.0000`)
@@ -104,7 +111,7 @@ class Login extends Component {
                 <Button variant="contained" color="secondary" onClick={() => this.createAccount()}>Join Human Action!</Button>
               </Link>
               <Link to={'./'}>
-                <Button variant="contained" onClick={() => firebase.auth().signOut()}>Sign out!</Button>
+                <Button variant="contained" onClick={() => this.signout_and_clearLocal()}>Sign out!</Button>
               </Link>
             </div>
           </div>

@@ -46,7 +46,17 @@ class Profile extends Component {
     return <Redirect to='/' />
 }
 
+  signout_and_clearLocal() {
+      try {
+        console.log(firebase.auth().displayName)
+        firebase.auth().signOut()
+        console.log('USER LOGGED OUT')
+        localStorage.clear();
 
+    } catch(err) {
+        console.log(err)
+    }
+  }
 
   /*componentWillMount() {
     this.getRows();
@@ -162,7 +172,7 @@ class Profile extends Component {
 
         <Button variant="outlined" color="primary" onClick={() => alert(`Private Key: \n ${(this.state.res) ? this.state.res.privatekey : null}`)} > Private Key</Button>
         <p> </p>
-        <Button variant="outlined" color="primary" onClick={() => firebase.auth().signOut()}>Sign out</Button>
+        <Button variant="outlined" color="primary" onClick={() => this.signout_and_clearLocal()}>Sign out</Button>
       </div>
 
         </div>
