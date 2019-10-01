@@ -15,6 +15,7 @@ import { styles }             from './styles.css'
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import moment from 'moment';
 import firebase from "firebase"
+import ReactCountdownClock from 'react-countdown-clock'
 // import { currentId } from 'async_hooks';
 
 
@@ -38,7 +39,7 @@ class Game extends Component {
                  join: false, //CAMBIAR
                  guess: '',
                  transaction: '',
-                 start: localStorage.getItem('startHour') ? moment(localStorage.getItem('startHour')).format() : moment(), //local stg
+                 start: localStorage.getItem('startHour') ? localStorage.getItem('startHour') : moment(), //local stg
                  data: localStorage.getItem('dataGame') ? JSON.parse(localStorage.getItem('dataGame')) : {
                     reward: 100,
                     hint1: 20,
@@ -145,7 +146,7 @@ class Game extends Component {
         //  ACA JOIN GAME
         const data = this.state.data
         const stations = data.stations
-        const startHour = moment()
+        const startHour = moment().format("HH:mm:ss")
         for(let i = stations.length - 1; i > 0; i--){
             const j = Math.floor(Math.random() * i)
             const temp = stations[i]
@@ -434,6 +435,13 @@ class Game extends Component {
         return (
             <div className="wrapperGame" id="mainGameee">    
               <div className="headerGame">
+                    <ReactCountdownClock
+                        seconds={3600}
+                        color="#b87bd4"
+                        alpha={0.9}
+                        timeFormat="hms"
+                        size={100}
+                    />
                     <LocationOnIcon />
                     <div className="stationTitle"> {station.name} </div>
                     <div className="stationSub"> {station.pregunta} </div>
