@@ -121,13 +121,15 @@ class Profile extends Component {
     <div className="page">
      
 
-        <Footer />
+        
         <div className="header">
             
         </div>
-
+          <div className="photoUsuario">
+            <img className="user-photo" src={photoUrl} />
+          </div>
         <div className="detalles">
-        <img className="user-photo" src={photoUrl} />
+          
         <div className="hola">
         <Grid container alignItems="center">
           <Grid item xs>
@@ -176,6 +178,7 @@ class Profile extends Component {
       </div>
 
         </div>
+        <Footer />
     </div>
       )
     }

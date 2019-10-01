@@ -5,8 +5,17 @@
     
 }
 
+#nombre {
+    color: azure;
+}
+#bien {
+    color: azure;
+}
+
 .pageI{
-    background-image: url("bottom.png");
+    display: flex;
+    flex-direction: column;
+    background-image: url("4Artboard2.png");
     height: 100%;
     background-size: cover;
 }
@@ -32,4 +41,8 @@
     align-items: center;
     width: 100%;
     height: 80px;
+}
+
+.photo-tes{
+    width: 90px;
 }

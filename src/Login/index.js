@@ -98,8 +98,8 @@ class Login extends Component {
                 src={Tesoro}
               />
             </div>
-            <h1>Bienvenido</h1>
-            <h3>{firebase.auth().currentUser.displayName}</h3>
+            <h1 id="bien">Bienvenido</h1>
+            <h3 id="nombre">{firebase.auth().currentUser.displayName}</h3>
             <div>
               <img className="photo-user"
                 alt="profile picture"
