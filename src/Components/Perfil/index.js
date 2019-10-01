@@ -31,11 +31,13 @@ class Profile extends Component {
 
     //PARA REDIRECT EN SU COMPONENTE PONGAN ESTOOOOOO
     var user = firebase.auth().currentUser;
+    let uid = user.uid
+    uid = uid.replace(/[^a-zA-Z0-9]+/g, '');
     if (user) {
         this.setState({
-            currentUser: user.uid
+            currentUser: uid
         })
-        this.getRows(user.uid);
+        this.getRows(uid);
     }
 
     //END REDIRECT

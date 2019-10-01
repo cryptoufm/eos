@@ -55,8 +55,9 @@ class Login extends Component {
 
   async createAccount() {
     var user = firebase.auth().currentUser;
-    const uid = user.uid;
-    const name1 = user.displayName; 
+    let uid = user.uid;
+    uid = uid.replace(/[^a-zA-Z0-9]+/g, '');
+    const name1 = user.displayName;
     var name2 = name1.replace(/ +/g, "");
     var matches = name2.replace(/[^a-zA-Z0-5]+/g, '');
     matches = matches.toLowerCase()
@@ -66,7 +67,7 @@ class Login extends Component {
 
       try {
         const resp = await fetch(`http://3.87.208.133:5000/createAccount?uid=${uid}&username=${matches}&amount=100.0000`)
-        console.log(`http://3.87.208.133:5000/createAccount?uid=${uid}&username=${matches}&amount=100.0000`)
+        console.log(`REQUESTTTTTTT http://3.87.208.133:5000/createAccount?uid=${uid}&username=${matches}&amount=100.0000`)
         console.log("resp", resp)
         var data = await resp.json();
         console.log("respuesta join", data)
