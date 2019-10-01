@@ -34,7 +34,7 @@ class Game extends Component {
                  hint1: localStorage.getItem('hint1') ?  JSON.parse(localStorage.getItem('hint1')) : false, //local stg
                  hint2: localStorage.getItem('hint2') ?  JSON.parse(localStorage.getItem('hint2')) : false, //local stg
                  valid: false,
-                 joinCode: '',
+                 joinCode: localStorage.getItem('matchCode') || '',
                  typed: false,
                  join: false, //CAMBIAR
                  guess: '',
@@ -146,7 +146,7 @@ class Game extends Component {
         //  ACA JOIN GAME
         const data = this.state.data
         const stations = data.stations
-        const startHour = moment().format("HH:mm:ss")
+        const startHour = moment()
         for(let i = stations.length - 1; i > 0; i--){
             const j = Math.floor(Math.random() * i)
             const temp = stations[i]
@@ -236,6 +236,18 @@ class Game extends Component {
     const diff = now.diff(when, 'minutes')
     console.log("diferencia", diff)
     const calc = Math.floor(((60-diff)/60)*q) ///DUDAAAA
+    if (calc < 0) {
+        calc = 0
+        return calc
+    }
+    return calc
+}
+
+getMinutes(q) {
+    const when = this.state.start
+    const now = moment()
+    const diff = now.diff(when, 'seconds')
+    const calc = 3600-diff ///DUDAAAA
     if (calc < 0) {
         calc = 0
         return calc
@@ -432,6 +444,8 @@ class Game extends Component {
         const station = this.state.data.stations[currentp]
         const hint1 = this.state.data.stations[currentp].hint1
         const hint2 = this.state.data.stations[currentp].hint2
+        const minutes = this.getMinutes()
+        console.log("MINUTOOOSSS", minutes)
         return (
             <div className="wrapperGame" id="mainGameee">    
               <div className="headerGame">
