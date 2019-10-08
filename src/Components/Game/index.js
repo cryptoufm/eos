@@ -357,6 +357,7 @@ getMinutes(q) {
         } catch(err) {
             console.log(err)
         }
+        console.log("no entra")
 
     }
 
@@ -452,7 +453,7 @@ getMinutes(q) {
             <div className="wrapperGame" id="mainGameee">    
               <div className="headerGame">
                     <ReactCountdownClock
-                        seconds={3600}
+                        seconds={minutes}
                         color="#b87bd4"
                         alpha={0.9}
                         timeFormat="hms"
